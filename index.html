@@ -3,121 +3,133 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Streamer Wallpaper</title>
+<title>Wallpaper Maker</title>
+
 <style>
-body {margin:0;background:#111;color:white;font-family:sans-serif;}
-#controls {background:#222;padding:10px;display:flex;flex-direction:column;gap:6px;}
-canvas {background:black;touch-action:none;}
-label{font-size:13px;}
-input,button{padding:6px;font-size:14px;}
+body{
+  margin:0;
+  background:#111;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-family:sans-serif;
+  color:white;
+}
+
+#canvasWrapper{
+  width:100%;
+  max-width:500px;
+  aspect-ratio:1440/3120;
+  background:black;
+  position:relative;
+}
+
+canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+#tools{
+  width:100%;
+  max-width:500px;
+  background:#222;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  box-sizing:border-box;
+}
+
+input, button{
+  padding:10px;
+  font-size:16px;
+}
 </style>
 </head>
 <body>
 
-<div id="controls">
-<label>닉네임 <input id="nick"></label>
-<label>메시지 <input id="msg"></label>
-<label>D-Day 날짜 <input type="date" id="dday"></label>
-<label>잠금 코드 <input id="lockInput"></label>
-
-<label><input type="checkbox" id="toggleNick" checked> 닉네임 표시</label>
-<label><input type="checkbox" id="toggleMsg" checked> 메시지 표시</label>
-<label><input type="checkbox" id="toggleDday" checked> D-Day 표시</label>
-<label><input type="checkbox" id="toggleSerial" checked> 시리얼 표시</label>
-<label><input type="checkbox" id="toggleSafe"> 시계 안전영역 표시</label>
-
-<button onclick="generate()">적용</button>
-<button onclick="saveImage()">저장</button>
+<div id="canvasWrapper">
+  <canvas id="canvas" width="1440" height="3120"></canvas>
 </div>
 
-<canvas id="canvas"></canvas>
+<div id="tools">
+  <input type="file" id="imageInput" accept="image/*">
+  <input type="text" id="textInput" placeholder="텍스트 입력">
+  <button onclick="addText()">텍스트 적용</button>
+  <button onclick="saveImage()">저장</button>
+</div>
 
 <script>
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-function resize(){
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - document.getElementById("controls").offsetHeight;
-}
-resize();
-window.addEventListener("resize", resize);
+let currentImage = null;
+let currentText = "";
 
-const params = new URLSearchParams(window.location.search);
-
-document.getElementById("nick").value = params.get("nick") || "";
-document.getElementById("msg").value = params.get("msg") || "";
-document.getElementById("dday").value = params.get("d") || "";
-const lockCode = params.get("lock") || "";
-
-const SERIAL = Math.floor(Math.random()*10000).toString().padStart(4,"0");
-
-function calcDday(dateStr){
-  if(!dateStr) return "";
-  const target = new Date(dateStr);
-  const now = new Date();
-  const diff = Math.ceil((target-now)/(1000*60*60*24));
-  return diff>=0 ? "D-"+diff : "D+"+Math.abs(diff);
-}
-
-function generate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // 배경
-  ctx.fillStyle="#000";
+// 초기 상태 (빈 캔버스)
+function clearCanvas(){
+  ctx.fillStyle = "black";
   ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+clearCanvas();
 
-  const nick = document.getElementById("nick").value;
-  const msg = document.getElementById("msg").value;
-  const dday = calcDday(document.getElementById("dday").value);
+document.getElementById("imageInput").addEventListener("change", function(e){
+  const file = e.target.files[0];
+  if(!file) return;
 
-  ctx.fillStyle="white";
-  ctx.textAlign="center";
-
-  if(toggleNick.checked){
-    ctx.font="bold 40px sans-serif";
-    ctx.fillText(nick, canvas.width/2, canvas.height*0.6);
+  const reader = new FileReader();
+  reader.onload = function(event){
+    const img = new Image();
+    img.onload = function(){
+      currentImage = img;
+      render();
+    }
+    img.src = event.target.result;
   }
+  reader.readAsDataURL(file);
+});
 
-  if(toggleMsg.checked){
-    ctx.font="24px sans-serif";
-    ctx.fillText(msg, canvas.width/2, canvas.height*0.7);
-  }
+function addText(){
+  currentText = document.getElementById("textInput").value;
+  render();
+}
 
-  if(toggleDday.checked){
-    ctx.font="20px sans-serif";
-    ctx.fillText(dday, canvas.width/2, canvas.height*0.8);
-  }
+function render(){
+  clearCanvas();
 
-  if(toggleSerial.checked){
-    ctx.font="16px monospace";
-    ctx.fillText("SERIAL #"+SERIAL, canvas.width/2, canvas.height*0.9);
-  }
+  if(currentImage){
+    // 이미지 중앙 배치
+    const maxWidth = canvas.width * 0.8;
+    const scale = maxWidth / currentImage.width;
+    const imgWidth = currentImage.width * scale;
+    const imgHeight = currentImage.height * scale;
 
-  if(toggleSafe.checked){
-    ctx.strokeStyle="red";
-    ctx.strokeRect(canvas.width*0.1, canvas.height*0.05,
-                   canvas.width*0.8, canvas.height*0.15);
-  }
+    const x = (canvas.width - imgWidth) / 2;
+    const y = (canvas.height - imgHeight) / 2 - 200;
 
-  // 잠금 오버레이
-  if(lockCode && document.getElementById("lockInput").value !== lockCode){
-    ctx.fillStyle="rgba(0,0,0,0.8)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="white";
-    ctx.font="30px sans-serif";
-    ctx.fillText("LOCKED", canvas.width/2, canvas.height/2);
+    ctx.drawImage(currentImage, x, y, imgWidth, imgHeight);
+
+    if(currentText){
+      ctx.fillStyle = "white";
+      ctx.font = "bold 80px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(
+        currentText,
+        canvas.width / 2,
+        y + imgHeight + 150
+      );
+    }
   }
 }
 
 function saveImage(){
-  const link=document.createElement("a");
-  link.download="wallpaper.png";
-  link.href=canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.download = "wallpaper.png";
+  link.href = canvas.toDataURL("image/png");
   link.click();
 }
-
-generate();
 </script>
+
 </body>
 </html>
