@@ -2,183 +2,212 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>해솔드림</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #000;
+            background: linear-gradient(to bottom, #000, #111);
             color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             min-height: 100vh;
             overflow-y: auto;
         }
         .header {
             text-align: center;
-            padding: 20px 0;
+            padding: 40px 20px 20px;
             width: 100%;
         }
         .title {
-            font-size: 32px;
-            font-weight: bold;
+            font-size: 3.5rem;
+            font-weight: 800;
             margin: 0;
+            letter-spacing: -1px;
         }
         .subtitle {
-            font-size: 18px;
-            margin-top: 10px;
-            color: #ccc;
+            font-size: 1.4rem;
+            margin-top: 8px;
+            color: #aaa;
+            font-weight: 400;
         }
         .categories {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            padding: 20px;
+            padding: 0 20px 40px;
+            gap: 32px;
         }
-        .category-box {
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            width: 80%;
-            max-width: 300px;
-            text-align: center;
+        .category-card {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 16px;
+            overflow: hidden;
+            width: 90%;
+            max-width: 340px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        .category-image {
+        .preview-image {
             width: 100%;
             height: auto;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            display: block;
         }
-        .setup-button {
-            background-color: #333;
-            color: #fff;
+        .card-footer {
+            padding: 20px;
+            text-align: center;
+        }
+        .setup-btn {
+            background: linear-gradient(135deg, #444, #222);
+            color: white;
             border: none;
             border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            font-size: 16px;
+            width: 90px;
+            height: 90px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.2s;
         }
-        .setup-button:hover {
-            background-color: #444;
+        .setup-btn:hover {
+            transform: scale(1.08);
+            background: linear-gradient(135deg, #555, #333);
         }
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
         .modal-content {
-            background-color: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
+            background: #111;
+            border-radius: 20px;
+            padding: 28px 24px;
+            width: 88%;
+            max-width: 360px;
             text-align: center;
-            width: 80%;
-            max-width: 300px;
+            position: relative;
+            border: 1px solid #333;
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 2rem;
+            color: #777;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            color: #fff;
         }
         .modal-title {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 1.6rem;
+            margin: 0 0 20px;
         }
-        .device-options {
+        .modal-desc {
+            color: #bbb;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .device-grid {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 24px;
         }
-        .device-button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 15px;
-            width: 120px;
+        .device-option {
+            background: #222;
+            border-radius: 16px;
+            padding: 20px 16px;
+            width: 130px;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            transition: all 0.2s;
+            border: 1px solid #333;
         }
-        .device-button:hover {
-            background-color: #444;
+        .device-option:hover {
+            background: #2a2a2a;
+            transform: translateY(-4px);
+            border-color: #555;
         }
         .device-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 3.2rem;
+            margin-bottom: 12px;
         }
-        .device-label {
-            font-size: 18px;
+        .device-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
-        .device-sub {
-            font-size: 12px;
-            color: #ccc;
-        }
-        .close {
+        .device-type {
+            font-size: 0.8rem;
             color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            cursor: pointer;
-        }
-        .close:hover {
-            color: #fff;
         }
     </style>
 </head>
 <body>
+
     <div class="header">
         <h1 class="title">해솔드림</h1>
         <p class="subtitle">해와 소나무 배경화면</p>
     </div>
+
     <div class="categories">
-        <div class="category-box">
-            <img class="category-image" src="https://via.placeholder.com/300x500?text=Life+Calendar+Preview" alt="Life Calendar Preview">
-            <button class="setup-button" onclick="openModal()">설정</button>
+        <div class="category-card">
+            <img class="preview-image" src="https://via.placeholder.com/340x680/111/eee?text=Life+Calendar+Preview" alt="Life Calendar">
+            <div class="card-footer">
+                <button class="setup-btn" onclick="openDeviceModal('life')">설정</button>
+            </div>
         </div>
-        <div class="category-box">
-            <img class="category-image" src="https://via.placeholder.com/300x500?text=Year+Calendar+Preview" alt="Year Calendar Preview">
-            <button class="setup-button" onclick="openModal()">설정</button>
+
+        <div class="category-card">
+            <img class="preview-image" src="https://via.placeholder.com/340x680/111/eee?text=Year+Calendar+Preview" alt="Year Calendar">
+            <div class="card-footer">
+                <button class="setup-btn" onclick="openDeviceModal('year')">설정</button>
+            </div>
         </div>
     </div>
 
+    <!-- 기기 선택 모달 -->
     <div id="deviceModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 class="modal-title">당신의 기기를 선택하세요</h2>
-            <p>기기 유형을 선택하여 설치 지침을 확인하세요.</p>
-            <div class="device-options">
-                <button class="device-button" onclick="selectDevice('iOS')">
-                    <span class="device-icon"></span>
-                    <span class="device-label">iPhone</span>
-                    <span class="device-sub">iOS Shortcuts</span>
-                </button>
-                <button class="device-button" onclick="selectDevice('Android')">
-                    <span class="device-icon">🤖</span>
-                    <span class="device-label">Android</span>
-                    <span class="device-sub">MacroDroid</span>
-                </button>
+            <p class="modal-desc">선택한 기기에 맞는 설치 가이드를 확인할 수 있습니다.</p>
+
+            <div class="device-grid">
+                <div class="device-option" onclick="goToGuide('ios')">
+                    <div class="device-icon"></div>
+                    <div class="device-name">iPhone</div>
+                    <div class="device-type">iOS Shortcuts</div>
+                </div>
+
+                <div class="device-option" onclick="goToGuide('android')">
+                    <div class="device-icon">🤖</div>
+                    <div class="device-name">Android</div>
+                    <div class="device-type">MacroDroid</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        function openModal() {
+        let currentType = 'life'; // life 또는 year
+
+        function openDeviceModal(type) {
+            currentType = type;
             document.getElementById('deviceModal').style.display = 'flex';
         }
 
@@ -186,18 +215,34 @@
             document.getElementById('deviceModal').style.display = 'none';
         }
 
-        function selectDevice(device) {
-            alert('선택된 기기: ' + device + '\n(여기에서 실제 설치 지침으로 리디렉션하거나 추가 로직을 구현할 수 있습니다.)');
+        function goToGuide(os) {
             closeModal();
+
+            let base = "https://thelifecalendar.com"; // 실제 사이트 URL
+            let path = "";
+
+            if (currentType === 'life') {
+                path = os === 'ios' ? "/life/ios" : "/life/android";
+            } else {
+                path = os === 'ios' ? "/year/ios" : "/year/android";
+            }
+
+            // 실제 서비스라면 아래처럼 실제 경로로 이동
+            // window.location.href = base + path;
+
+            // 지금은 예시로 알림 + 콘솔
+            alert(`[${currentType.toUpperCase()}] ${os.toUpperCase()} 설치 가이드로 이동합니다!\n\n예시 URL: ${base}${path}`);
+            console.log("이동 시도:", base + path);
         }
 
-        // 모달 외부 클릭 시 닫기
+        // 모달 바깥 클릭 시 닫기
         window.onclick = function(event) {
-            var modal = document.getElementById('deviceModal');
-            if (event.target == modal) {
+            const modal = document.getElementById('deviceModal');
+            if (event.target === modal) {
                 closeModal();
             }
         }
     </script>
+
 </body>
 </html>
