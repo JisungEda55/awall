@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>해솔드림 - 해와 소나무 배경화면</title>
     <style>
-        /* 밝고 뽀짝한 테마 변수 정의 */
+        /* === 테마 변수 & 기본 설정 === */
         :root {
-            --bg-color: #FFF9E6; /* 따뜻한 크림색 배경 */
+            --bg-color: #FFF9E6;
             --card-bg: #FFFFFF;
-            --text-main: #5D4037; /* 부드러운 갈색 텍스트 */
+            --text-main: #5D4037;
             --text-sub: #A1887F;
-            --accent-coral: #FF8A80; /* 뽀짝한 코랄 포인트 */
-            --accent-mint: #69F0AE; /* 상큼한 민트 포인트 */
+            --accent-coral: #FF8A80;
+            --accent-mint: #69F0AE;
             --button-hover: #FF7066;
-            --modal-overlay: rgba(255, 255, 255, 0.7); /* 밝은 블러 */
-            --shadow-soft: 0 10px 30px rgba(255, 138, 128, 0.2); /* 은은한 코랄 그림자 */
+            --modal-overlay: rgba(255, 255, 255, 0.6);
+            --shadow-soft: 0 10px 30px rgba(255, 138, 128, 0.15);
+            /* 애니메이션 타이밍 변수 */
+            --bounce-easing: cubic-bezier(0.34, 1.56, 0.64, 1); /* 탱탱한 느낌 */
+            --smooth-easing: cubic-bezier(0.4, 0.0, 0.2, 1); /* 부드러운 느낌 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -27,170 +30,188 @@
             overflow-x: hidden;
         }
 
-        /* 메인 레이아웃 */
+        /* === 애니메이션 키프레임 정의 === */
+        /* 아래에서 위로 부드럽게 등장 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* 뿅! 하고 나타나는 효과 (모달용) */
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* === 메인 레이아웃 === */
         .container { max-width: 500px; margin: 0 auto; padding: 40px 25px; }
-        header { text-align: center; margin-bottom: 50px; }
+        
+        /* 헤더 애니메이션 적용 */
+        header {
+            text-align: center; margin-bottom: 50px;
+            animation: fadeInUp 0.8s var(--smooth-easing) backwards;
+        }
         header h1 {
             font-size: 2.8rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 8px;
-            color: var(--text-main);
-            text-shadow: 2px 2px 0px #FFE0B2; /* 귀여운 텍스트 효과 */
+            text-shadow: 2px 2px 0px #FFE0B2;
         }
         header p { color: var(--text-sub); font-size: 1.1rem; font-weight: 500; }
-        .brand-emoji { font-size: 1.5rem; margin-left: 5px; }
+        .brand-emoji { font-size: 1.5rem; margin-left: 5px; display: inline-block; transition: transform 0.3s ease; }
+        header:hover .brand-emoji { transform: rotate(15deg) scale(1.1); } /* 호버시 이모지 까딱 */
 
-        /* 카드 스타일 - 더 둥글고 화사하게 */
+        /* === 카드 스타일 === */
         .card {
             background: var(--card-bg);
-            border-radius: 32px; /* 둥글게 둥글게 */
+            border-radius: 32px;
             padding: 28px;
             margin-bottom: 35px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: var(--shadow-soft);
             border: 2px solid #FFF0DF;
+            /* 카드 등장 애니메이션 (시간차 적용) */
+            animation: fadeInUp 0.8s var(--smooth-easing) backwards;
+            transition: transform 0.3s var(--smooth-easing), box-shadow 0.3s ease;
         }
-        .card:hover { transform: translateY(-5px); }
-        .card:active { transform: scale(0.98); }
+        /* 첫번째 카드 딜레이 */
+        .card:nth-of-type(1) { animation-delay: 0.2s; }
+        /* 두번째 카드 딜레이 */
+        .card:nth-of-type(2) { animation-delay: 0.4s; }
+
+        .card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 15px 35px rgba(255, 138, 128, 0.25); }
         
         .preview-img {
-            width: 100%;
-            height: 280px;
-            background: #FFE0B2; /* 프리뷰 배경도 밝게 */
-            border-radius: 24px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-coral);
-            font-weight: bold;
-            overflow: hidden;
-            border: 1px solid #FFCCBC;
+            width: 100%; height: 280px; background: #FFE0B2; border-radius: 24px; margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: center; color: var(--accent-coral);
+            font-weight: bold; overflow: hidden; border: 1px solid #FFCCBC;
+            transition: transform 0.5s ease;
         }
+        .card:hover .preview-img img { transform: scale(1.05); transition: transform 0.5s ease; }
         .preview-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
         
-        .card-info h2 { font-size: 1.6rem; margin-bottom: 8px; color: var(--text-main); font-weight: 800; }
+        .card-info h2 { font-size: 1.6rem; margin-bottom: 8px; font-weight: 800; }
         .card-info p { color: var(--text-sub); font-size: 0.95rem; margin-bottom: 25px; }
 
-        /* 버튼 스타일 - 알약 모양으로 뽀짝하게 */
+        /* === 버튼 스타일 === */
         .btn-setup {
-            width: 100%;
-            padding: 18px;
-            border-radius: 50px; /* 완전 둥근 알약 모양 */
-            border: none;
-            background: var(--accent-coral);
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            width: 100%; padding: 18px; border-radius: 50px; border: none;
+            background: var(--accent-coral); color: white; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 4px 15px rgba(255, 138, 128, 0.4);
-            transition: background 0.2s;
+            transition: all 0.2s var(--bounce-easing); /* 쫀득한 클릭감 */
         }
-        .btn-setup:hover { background: var(--button-hover); }
+        .btn-setup:hover { background: var(--button-hover); transform: translateY(-2px); }
+        .btn-setup:active { transform: scale(0.95) translateY(0); /* 클릭시 작아짐 */ }
 
-        /* 모달 스타일 */
+        /* === 모달 스타일 (애니메이션 핵심) === */
         .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--modal-overlay);
-            backdrop-filter: blur(12px);
-            display: none;
-            align-items: center;
-            justify-content: center;
+            backdrop-filter: blur(8px); /* 블러 효과 강화 */
+            display: flex; align-items: center; justify-content: center;
             z-index: 100;
+            /* 초기 상태: 숨김 */
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
+        /* 모달 활성화 클래스 */
+        .modal.active {
+            opacity: 1; visibility: visible;
+        }
+
         .modal-content {
-            background: var(--card-bg);
-            width: 85%;
-            max-width: 360px;
-            padding: 35px;
-            border-radius: 40px; /* 모달도 아주 둥글게 */
-            text-align: center;
-            box-shadow: var(--shadow-soft);
+            background: var(--card-bg); width: 85%; max-width: 360px; padding: 35px;
+            border-radius: 40px; text-align: center; box-shadow: var(--shadow-soft);
+            /* 초기 상태: 작게 시작 */
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s var(--bounce-easing); /* 탱탱한 등장 효과 */
         }
-        .modal-title { margin-bottom: 28px; font-size: 1.3rem; font-weight: 800; color: var(--text-main); }
+        /* 모달이 활성화되면 콘텐츠가 뿅! 하고 커짐 */
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-title { margin-bottom: 28px; font-size: 1.3rem; font-weight: 800; }
         
         .device-btn {
-            width: 100%;
-            padding: 16px;
-            margin-bottom: 15px;
-            border-radius: 20px;
-            border: 2px solid transparent;
-            font-size: 1.05rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.2s;
+            width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 20px;
+            border: 2px solid transparent; font-size: 1.05rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.2s var(--bounce-easing);
         }
         .btn-ios { background: #F5F5F5; color: #333; }
         .btn-android { background: #E8F5E9; color: #2E7D32; }
         
-        .device-btn:hover { transform: scale(1.02); }
+        .device-btn:hover { transform: scale(1.03); }
+        .device-btn:active { transform: scale(0.97); }
         .btn-ios:hover { border-color: #ccc; background: white; }
         .btn-android:hover { border-color: var(--accent-mint); background: white; }
         
-        .btn-close { background: transparent; color: var(--text-sub); margin-top: 15px; border: none; font-weight: 600; cursor: pointer;}
-
-        /* 가이드 섹션 */
-        .guide-page {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            background: var(--bg-color);
-            padding: 50px 25px 120px 25px;
-            min-height: 100vh;
+        .btn-close {
+            background: transparent; color: var(--text-sub); margin-top: 15px; border: none;
+            font-weight: 600; cursor: pointer; padding: 10px;
+            transition: color 0.2s ease;
         }
-        .guide-header { margin-bottom: 40px; text-align: center;}
-        .guide-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
-        .guide-step { margin-bottom: 35px; background: white; padding: 25px; border-radius: 28px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #FFF0DF; }
+        .btn-close:hover { color: var(--accent-coral); }
+
+        /* === 가이드 섹션 === */
+        .guide-page {
+            display: none; /* 기본 숨김 */
+            position: absolute; top: 0; left: 0; width: 100%;
+            background: var(--bg-color); padding: 50px 25px 120px 25px; min-height: 100vh;
+        }
+        /* 가이드 페이지 등장시 적용될 클래스 */
+        .guide-page.active {
+            display: block;
+            animation: fadeInUp 0.6s var(--smooth-easing);
+        }
+
+        .guide-header { margin-bottom: 40px; text-align: center; }
+        .guide-header h2 { font-size: 1.8rem; font-weight: 800; }
+
+        .guide-step {
+            margin-bottom: 35px; background: white; padding: 25px; border-radius: 28px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #FFF0DF;
+            /* 스텝별 등장 애니메이션 (초기 투명) */
+            opacity: 0;
+        }
+        /* 가이드 페이지가 활성화되면 스텝들이 순차적으로 나타남 */
+        .guide-page.active .guide-step {
+            animation: fadeInUp 0.6s var(--smooth-easing) forwards;
+        }
+        .guide-step:nth-child(1) { animation-delay: 0.1s; }
+        .guide-step:nth-child(2) { animation-delay: 0.3s; }
+        .guide-step:nth-child(3) { animation-delay: 0.5s; }
+
         .step-num { color: var(--accent-coral); font-weight: 900; font-size: 1rem; margin-bottom: 8px; display: inline-block; background: #FFEBEE; padding: 4px 12px; border-radius: 20px;}
         .guide-step h3 { font-size: 1.3rem; margin-bottom: 12px; font-weight: 800; }
-        .guide-step p { color: var(--text-main); font-size: 1rem; margin-bottom: 15px; line-height: 1.7; }
+        .guide-step p { font-size: 1rem; margin-bottom: 15px; line-height: 1.7; }
         
-        /* 코드 박스 밝게 변경 */
         .code-box {
-            background: #FFF3E0; /* 아주 연한 주황색 배경 */
-            padding: 18px;
-            border-radius: 16px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            word-break: break-all;
-            border: 2px dashed var(--accent-coral);
-            color: #D84315;
-            font-weight: 600;
-            text-align: center;
+            background: #FFF3E0; padding: 18px; border-radius: 16px;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; word-break: break-all;
+            border: 2px dashed var(--accent-coral); color: #D84315; font-weight: 600; text-align: center;
+            transition: transform 0.2s ease; cursor: copy;
         }
+        .code-box:active { transform: scale(0.98); background: #FFE0B2;}
 
         .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%;
-            padding: 25px;
-            /* 배경색과 자연스럽게 섞이는 그라데이션 */
-            background: linear-gradient(to top, var(--bg-color) 50%, transparent);
-            display: flex;
-            justify-content: center;
-            pointer-events: none; /* 버튼 외 영역 클릭 방지 */
+            position: fixed; bottom: 0; left: 0; width: 100%; padding: 25px;
+            background: linear-gradient(to top, var(--bg-color) 60%, transparent);
+            display: flex; justify-content: center; pointer-events: none;
+            /* 네비게이션 등장 애니메이션 */
+            transform: translateY(100%); opacity: 0; transition: all 0.5s ease 0.6s;
         }
+        .guide-page.active .bottom-nav { transform: translateY(0); opacity: 1; }
+
         .btn-home {
-            background: var(--text-main);
-            color: white;
-            padding: 14px 35px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 5px 15px rgba(93, 64, 55, 0.3);
-            cursor: pointer;
-            pointer-events: auto; /* 버튼만 클릭 가능 */
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: var(--text-main); color: white; padding: 14px 35px; border-radius: 50px;
+            border: none; font-weight: 700; font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(93, 64, 55, 0.3); cursor: pointer; pointer-events: auto;
+            display: flex; align-items: center; gap: 8px;
+            transition: all 0.2s var(--bounce-easing);
         }
+        .btn-home:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(93, 64, 55, 0.4); }
+        .btn-home:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -251,29 +272,55 @@
 
     <script>
         let currentType = ''; // 'life' or 'year'
+        const modal = document.getElementById('deviceModal');
+        const home = document.getElementById('home');
+        const guidePage = document.getElementById('guidePage');
 
+        // 모달 열기 (클래스 토글로 애니메이션 실행)
         function openModal(type) {
             currentType = type;
-            // 모달 열 때 부드러운 효과
-            const modal = document.getElementById('deviceModal');
-            modal.style.display = 'flex';
-            modal.style.opacity = '0';
-            setTimeout(() => { modal.style.opacity = '1'; }, 10);
+            modal.classList.add('active');
         }
 
+        // 모달 닫기
         function closeModal() {
-            document.getElementById('deviceModal').style.display = 'none';
+            modal.classList.remove('active');
         }
 
+        // 홈으로 돌아기기 (부드러운 전환)
         function backToHome() {
-            window.scrollTo(0, 0);
-            document.getElementById('guidePage').style.display = 'none';
-            document.getElementById('home').style.display = 'block';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            guidePage.classList.remove('active');
+            
+            // 가이드가 사라지는 애니메이션 시간만큼 대기 후 홈 표시
+            setTimeout(() => {
+                guidePage.style.display = 'none';
+                home.style.display = 'block';
+                // 홈 요소들에 다시 등장 애니메이션 적용을 위해 클래스 리셋 (선택사항)
+                // home.style.animation = 'none';
+                // home.offsetHeight; /* trigger reflow */
+                // home.style.animation = null; 
+            }, 300);
         }
 
+        // 가이드 페이지로 이동
         function goToGuide(device) {
             closeModal();
-            document.getElementById('home').style.display = 'none';
+            
+            // 모달 닫히는 시간(0.3s) 후에 화면 전환 시작
+            setTimeout(() => {
+                home.style.display = 'none';
+                updateGuideContent(device);
+                guidePage.style.display = 'block';
+                // 약간의 딜레이 후 active 클래스 추가하여 등장 애니메이션 시작
+                setTimeout(() => {
+                    guidePage.classList.add('active');
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }, 50);
+            }, 300);
+        }
+
+        function updateGuideContent(device) {
             const content = document.getElementById('guideContent');
             const typeTitle = currentType === 'life' ? '인생 달력 🌱' : '올해 달력 📅';
             
@@ -328,13 +375,10 @@
                     <div class="guide-step">
                         <p class="step-num">STEP 3 🖼️</p>
                         <h3>배경화면 짠!</h3>
-                        <p>🔹 <b>작업 2:</b> '배경화면 설정'을 선택하고, 방금 다운로드된 이미지가 저장되는 경로를 지정해주시면 완료!</p>
+                        <p>🔹 <b>작업 2:</b> '배경화면 설정'을 선택하고, 방금 다운로드된 이미지 경로를 지정해주시면 완료!</p>
                     </div>
                 `;
             }
-            
-            document.getElementById('guidePage').style.display = 'block';
-            window.scrollTo(0, 0);
         }
     </script>
 </body>
