@@ -8,167 +8,166 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(to bottom, #000, #0a0a0a);
-            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(to bottom, #000, #0f0f0f);
+            color: #ffffff;
             min-height: 100vh;
             overflow-x: hidden;
         }
         .header {
             text-align: center;
-            padding: 50px 20px 30px;
+            padding: 60px 20px 40px;
         }
         .title {
             font-size: 3.8rem;
             font-weight: 900;
             margin: 0;
-            letter-spacing: -2px;
-            background: linear-gradient(90deg, #fff, #ccc);
+            letter-spacing: -1.5px;
+            background: linear-gradient(90deg, #ffffff, #cccccc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .subtitle {
             font-size: 1.5rem;
-            color: #bbb;
-            margin-top: 10px;
+            color: #bbbbbb;
+            margin-top: 12px;
             font-weight: 300;
         }
         .categories {
             padding: 0 20px 60px;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 48px;
         }
         .category-card {
-            background: rgba(20,20,20,0.9);
+            background: rgba(25, 25, 25, 0.92);
             border-radius: 24px;
             overflow: hidden;
-            border: 1px solid rgba(100,100,100,0.3);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            border: 1px solid rgba(80,80,80,0.4);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
         }
-        .preview {
+        .preview-img {
             width: 100%;
             height: auto;
             display: block;
         }
         .setup-area {
-            padding: 30px 20px;
+            padding: 32px 24px;
             text-align: center;
         }
         .setup-btn {
-            background: linear-gradient(145deg, #333, #111);
-            color: #fff;
+            background: linear-gradient(135deg, #444444, #222222);
+            color: white;
             border: none;
-            border-radius: 50%;
-            width: 110px;
-            height: 110px;
-            font-size: 1.3rem;
+            border-radius: 999px;
+            width: 100px;
+            height: 100px;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.18s;
         }
         .setup-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
-        /* 가이드 섹션 (초기 숨김) */
-        .guide-section {
+        /* 모달 스타일 */
+        .modal {
             display: none;
-            padding: 40px 24px 80px;
-            background: #000;
-            min-height: 100vh;
-        }
-        .guide-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .guide-title {
-            font-size: 2.2rem;
-            margin: 0 0 12px;
-        }
-        .guide-desc {
-            color: #aaa;
-            font-size: 1.05rem;
-            line-height: 1.5;
-        }
-        .step {
-            margin-bottom: 50px;
-        }
-        .step-number {
-            background: #222;
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: inline-flex;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 999;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            margin-right: 12px;
-            font-size: 1.3rem;
+            backdrop-filter: blur(6px);
         }
-        .step-title {
-            font-size: 1.6rem;
-            margin: 20px 0 16px;
+        .modal-content {
+            background: #111111;
+            border-radius: 24px;
+            padding: 32px 28px;
+            width: 86%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid #333333;
+            position: relative;
         }
-        .input-group {
-            margin: 20px 0;
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 2.4rem;
+            color: #666;
+            cursor: pointer;
+            line-height: 1;
         }
-        .label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ccc;
-            font-size: 1.1rem;
+        .close-btn:hover {
+            color: #ffffff;
         }
-        .birthday-inputs {
-            display: flex;
-            gap: 10px;
+        .modal-title {
+            font-size: 1.7rem;
+            margin: 0 0 24px;
+            font-weight: 700;
         }
-        input[type="number"], select {
-            background: #1a1a1a;
-            color: #fff;
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 12px;
+        .modal-desc {
+            color: #cccccc;
+            margin-bottom: 32px;
             font-size: 1rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .birthday-inputs input {
-            flex: 1;
-        }
-        select {
-            appearance: none;
-            background: #1a1a1a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23aaa' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 12px center;
-            background-size: 12px;
-        }
-        .note {
-            background: rgba(80,80,0,0.2);
-            border-left: 4px solid #ffcc00;
-            padding: 16px;
-            margin: 20px 0;
-            border-radius: 8px;
-            font-size: 0.95rem;
             line-height: 1.5;
         }
-        .important {
-            color: #ffdd44;
-            font-weight: bold;
+        .device-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+        }
+        .device-btn {
+            background: #222222;
+            border: 1px solid #444444;
+            border-radius: 16px;
+            padding: 20px 16px;
+            width: 140px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .device-btn:hover {
+            background: #2a2a2a;
+            transform: translateY(-6px);
+            border-color: #666666;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+        }
+        .device-icon {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+        }
+        .device-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .device-subtitle {
+            font-size: 0.85rem;
+            color: #aaaaaa;
+        }
+        /* 가이드 영역 (초기 숨김) */
+        .guide {
+            display: none;
+            padding: 40px 24px 100px;
         }
         .back-btn {
             position: fixed;
-            bottom: 20px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
+            background: #2a2a2a;
             color: white;
             border: none;
             border-radius: 50px;
-            padding: 14px 32px;
+            padding: 14px 40px;
             font-size: 1.1rem;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
         }
     </style>
 </head>
@@ -181,169 +180,107 @@
         </div>
 
         <div class="categories">
+            <!-- Life Calendar 카드 -->
             <div class="category-card">
-                <img class="preview" src="https://via.placeholder.com/375x812/111/eee?text=Life+Calendar+Lock+Screen" alt="Life Calendar">
+                <img class="preview-img" src="https://via.placeholder.com/375x812/0a0a0a/cccccc?text=Life+Calendar+Preview" alt="Life Calendar Preview">
                 <div class="setup-area">
-                    <button class="setup-btn" onclick="showGuide('ios')">iOS 설정</button>
-                    <button class="setup-btn" onclick="showGuide('android')" style="margin-left:20px;">Android 설정</button>
+                    <button class="setup-btn" onclick="openModal('life')">설정</button>
                 </div>
             </div>
 
+            <!-- Year Calendar 카드 -->
             <div class="category-card">
-                <img class="preview" src="https://via.placeholder.com/375x812/111/eee?text=Year+Calendar+Preview" alt="Year Calendar">
+                <img class="preview-img" src="https://via.placeholder.com/375x812/0a0a0a/cccccc?text=Year+Calendar+Preview" alt="Year Calendar Preview">
                 <div class="setup-area">
-                    <button class="setup-btn" onclick="showGuide('ios_year')">iOS 설정</button>
-                    <button class="setup-btn" onclick="showGuide('android_year')" style="margin-left:20px;">Android 설정</button>
+                    <button class="setup-btn" onclick="openModal('year')">설정</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- iOS Life Calendar Guide -->
-    <div id="guide-ios" class="guide-section">
-        <div class="guide-header">
-            <h2 class="guide-title">Installation Steps</h2>
-            <p class="guide-desc">First, define your wallpaper settings. Then create an automation to run daily. Finally, add the shortcut actions to update your lock screen.</p>
-        </div>
+    <!-- 기기 선택 모달 -->
+    <div id="deviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title">기기 선택</h2>
+            <p class="modal-desc">설치 방법을 확인할 기기를 선택해주세요.</p>
 
-        <div class="step">
-            <span class="step-number">1</span>
-            <h3 class="step-title">Define your Wallpaper</h3>
-            <div class="input-group">
-                <div class="label">Your Birthday</div>
-                <div class="birthday-inputs">
-                    <input type="number" placeholder="Year" min="1900" max="2025">
-                    <input type="number" placeholder="Month" min="1" max="12">
-                    <input type="number" placeholder="Day" min="1" max="31">
+            <div class="device-buttons">
+                <div class="device-btn" onclick="showGuide(currentType + '-ios')">
+                    <div class="device-icon"></div>
+                    <div class="device-name">iPhone</div>
+                    <div class="device-subtitle">Shortcuts</div>
+                </div>
+
+                <div class="device-btn" onclick="showGuide(currentType + '-android')">
+                    <div class="device-icon">🤖</div>
+                    <div class="device-name">Android</div>
+                    <div class="device-subtitle">MacroDroid</div>
                 </div>
             </div>
-            <div class="input-group">
-                <div class="label">iPhone Model</div>
-                <select>
-                    <option>iPhone 15 / 15 Pro / 16</option>
-                    <option>iPhone 14 / 14 Pro</option>
-                    <!-- 더 많은 옵션 추가 가능 -->
-                </select>
-            </div>
         </div>
-
-        <div class="step">
-            <span class="step-number">2</span>
-            <h3 class="step-title">Create Automation</h3>
-            <p>Open <strong>Shortcuts</strong> app → Go to Automation tab → New Automation → Time of Day → 6:00 AM → Repeat "Daily" → Select "Run Immediately" → "Create New Shortcut"</p>
-        </div>
-
-        <div class="step">
-            <span class="step-number">3</span>
-            <h3 class="step-title">Create Shortcut</h3>
-            <p>ADD THESE ACTIONS:</p>
-            <ol style="padding-left:20px; line-height:2;">
-                <li>"Get Contents of URL" → paste the following URL (완료 후 생성된 URL 입력)</li>
-                <li>"Set Wallpaper Photo" → choose "Lock Screen"</li>
-            </ol>
-            <div class="note">
-                <span class="important">Important:</span> In "Set Wallpaper Photo", tap the arrow (→) to show options → disable both "Crop to Subject" and "Show Preview"<br>
-                This prevents iOS from cropping and asking for confirmation each time.
-            </div>
-        </div>
-
-        <button class="back-btn" onclick="backToHome()">돌아가기</button>
     </div>
 
-    <!-- Android Life Calendar Guide -->
-    <div id="guide-android" class="guide-section">
-        <div class="guide-header">
-            <h2 class="guide-title">Installation Steps</h2>
-            <p class="guide-desc">First, define your wallpaper settings. Then set up MacroDroid to automatically update your wallpaper daily.</p>
-        </div>
-
-        <div class="step">
-            <span class="step-number">1</span>
-            <h3 class="step-title">Define your Wallpaper</h3>
-            <div class="input-group">
-                <div class="label">Your Birthday</div>
-                <div class="birthday-inputs">
-                    <input type="number" placeholder="Year">
-                    <input type="number" placeholder="Month">
-                    <input type="number" placeholder="Day">
-                </div>
-            </div>
-            <div class="input-group">
-                <div class="label">Phone Model</div>
-                <input type="text" placeholder="Search for your phone model...">
-            </div>
-        </div>
-
-        <div class="step">
-            <span class="step-number">2</span>
-            <h3 class="step-title">Prerequisites</h3>
-            <p>Install <strong>MacroDroid</strong> from Google Play Store.</p>
-        </div>
-
-        <div class="step">
-            <span class="step-number">3</span>
-            <h3 class="step-title">Setup Macro</h3>
-            <p>Open MacroDroid → Add Macro</p>
-            <p>Trigger: Date/Time → Day/Time → Set time to 00:01:00 → Activate all weekdays</p>
-        </div>
-
-        <div class="step">
-            <span class="step-number">4</span>
-            <h3 class="step-title">Configure Actions</h3>
-            <p>4.1 Download Image</p>
-            <ul>
-                <li>Web Interactions → HTTP Request → GET</li>
-                <li>Paste the URL (Step 1 완료 후 생성)</li>
-                <li>Block next actions until complete</li>
-                <li>Save HTTP response to file: /Download/life.png</li>
-            </ul>
-            <p>4.2 Set Wallpaper</p>
-            <ul>
-                <li>Device Settings → Set Wallpaper</li>
-                <li>Choose Image and Screen</li>
-                <li>Enter: /Download/life.png</li>
-            </ul>
-            <div class="note">
-                <span class="important">Important:</span> Use the exact same folder and filename in both actions.
-            </div>
-        </div>
-
-        <div class="step">
-            <span class="step-number">5</span>
-            <h3 class="step-title">Finalize</h3>
-            <p>Give the macro a name → Tap Create Macro</p>
-        </div>
-
-        <button class="back-btn" onclick="backToHome()">돌아가기</button>
+    <!-- 가이드 컨테이너들 -->
+    <div id="guide-life-ios" class="guide">
+        <h2>Life Calendar - iOS 설치 가이드</h2>
+        <p>1. 생년월일 입력 → 2. Shortcuts 앱에서 Automation 생성 → 3. 매일 6시 실행 → 4. Get Contents of URL + Set Wallpaper Photo 액션 추가</p>
+        <!-- 여기에 실제 상세 단계 내용 복사/붙여넣기 -->
+        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
     </div>
 
-    <!-- Year Calendar Guides는 비슷하게 복사해서 추가 가능 (현재는 Life 중심으로 구현) -->
-    <div id="guide-ios_year" class="guide-section">
-        <h2 class="guide-title">Year Calendar - iOS 설치 가이드</h2>
-        <p class="guide-desc">Life Calendar와 유사하나 Year 버전에 맞게 URL 및 설정이 다를 수 있습니다. (상세 내용은 Life와 동일하게 적용)</p>
-        <!-- Life와 동일한 구조 복사 가능 -->
-        <button class="back-btn" onclick="backToHome()">돌아가기</button>
+    <div id="guide-life-android" class="guide">
+        <h2>Life Calendar - Android 설치 가이드</h2>
+        <p>1. 생년월일 입력 → 2. MacroDroid 설치 → 3. 매일 새벽 매크로 생성 → 4. HTTP GET으로 이미지 다운로드 → 5. Wallpaper 설정</p>
+        <!-- 상세 단계 -->
+        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
     </div>
 
-    <div id="guide-android_year" class="guide-section">
-        <h2 class="guide-title">Year Calendar - Android 설치 가이드</h2>
-        <p class="guide-desc">Life Calendar와 유사하나 Year 버전에 맞게 조정.</p>
-        <button class="back-btn" onclick="backToHome()">돌아가기</button>
+    <div id="guide-year-ios" class="guide">
+        <h2>Year Calendar - iOS 설치 가이드</h2>
+        <p>Year 버전 전용 가이드 (Shortcuts 기반)...</p>
+        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
+    </div>
+
+    <div id="guide-year-android" class="guide">
+        <h2>Year Calendar - Android 설치 가이드</h2>
+        <p>Year 버전 전용 가이드 (MacroDroid 기반)...</p>
+        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
     </div>
 
     <script>
-        function showGuide(type) {
+        let currentType = 'life'; // 'life' 또는 'year'
+
+        function openModal(type) {
+            currentType = type;
+            document.getElementById('deviceModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('deviceModal').style.display = 'none';
+        }
+
+        function showGuide(guideId) {
+            closeModal();
             document.getElementById('home').style.display = 'none';
-            const guides = ['guide-ios', 'guide-android', 'guide-ios_year', 'guide-android_year'];
-            guides.forEach(id => {
-                document.getElementById(id).style.display = (id === 'guide-' + type) ? 'block' : 'none';
+            document.querySelectorAll('.guide').forEach(el => {
+                el.style.display = 'none';
             });
+            document.getElementById('guide-' + guideId).style.display = 'block';
+            window.scrollTo(0, 0);
         }
 
         function backToHome() {
-            document.querySelectorAll('.guide-section').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.guide').forEach(el => el.style.display = 'none');
             document.getElementById('home').style.display = 'block';
             window.scrollTo(0, 0);
+        }
+
+        // 모달 바깥 클릭 닫기
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                closeModal();
+            }
         }
     </script>
 
