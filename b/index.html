@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>해솔드림 - 해와 소나무 배경화면</title>
     <style>
+        /* 밝고 뽀짝한 테마 변수 정의 */
         :root {
-            --bg-color: #000000;
-            --card-bg: #1c1c1e;
-            --accent-blue: #0A84FF;
-            --accent-green: #30D158;
-            --text-main: #ffffff;
-            --text-sub: #8e8e93;
-            --modal-overlay: rgba(0, 0, 0, 0.85);
+            --bg-color: #FFF9E6; /* 따뜻한 크림색 배경 */
+            --card-bg: #FFFFFF;
+            --text-main: #5D4037; /* 부드러운 갈색 텍스트 */
+            --text-sub: #A1887F;
+            --accent-coral: #FF8A80; /* 뽀짝한 코랄 포인트 */
+            --accent-mint: #69F0AE; /* 상큼한 민트 포인트 */
+            --button-hover: #FF7066;
+            --modal-overlay: rgba(255, 255, 255, 0.7); /* 밝은 블러 */
+            --shadow-soft: 0 10px 30px rgba(255, 138, 128, 0.2); /* 은은한 코랄 그림자 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
@@ -25,90 +28,113 @@
         }
 
         /* 메인 레이아웃 */
-        .container { max-width: 500px; margin: 0 auto; padding: 40px 20px; }
+        .container { max-width: 500px; margin: 0 auto; padding: 40px 25px; }
         header { text-align: center; margin-bottom: 50px; }
-        header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-        header p { color: var(--text-sub); font-size: 1rem; }
+        header h1 {
+            font-size: 2.8rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 8px;
+            color: var(--text-main);
+            text-shadow: 2px 2px 0px #FFE0B2; /* 귀여운 텍스트 효과 */
+        }
+        header p { color: var(--text-sub); font-size: 1.1rem; font-weight: 500; }
+        .brand-emoji { font-size: 1.5rem; margin-left: 5px; }
 
-        /* 카드 스타일 */
+        /* 카드 스타일 - 더 둥글고 화사하게 */
         .card {
             background: var(--card-bg);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 30px;
-            transition: transform 0.2s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 32px; /* 둥글게 둥글게 */
+            padding: 28px;
+            margin-bottom: 35px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow-soft);
+            border: 2px solid #FFF0DF;
         }
+        .card:hover { transform: translateY(-5px); }
         .card:active { transform: scale(0.98); }
+        
         .preview-img {
             width: 100%;
-            height: 300px;
-            background: #2c2c2e;
-            border-radius: 16px;
-            margin-bottom: 20px;
+            height: 280px;
+            background: #FFE0B2; /* 프리뷰 배경도 밝게 */
+            border-radius: 24px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #444;
+            color: var(--accent-coral);
+            font-weight: bold;
             overflow: hidden;
+            border: 1px solid #FFCCBC;
         }
-        .preview-img img { width: 100%; height: 100%; object-fit: cover; }
-        .card-info h2 { font-size: 1.4rem; margin-bottom: 6px; }
-        .card-info p { color: var(--text-sub); font-size: 0.9rem; margin-bottom: 20px; }
+        .preview-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        
+        .card-info h2 { font-size: 1.6rem; margin-bottom: 8px; color: var(--text-main); font-weight: 800; }
+        .card-info p { color: var(--text-sub); font-size: 0.95rem; margin-bottom: 25px; }
 
+        /* 버튼 스타일 - 알약 모양으로 뽀짝하게 */
         .btn-setup {
             width: 100%;
-            padding: 16px;
-            border-radius: 14px;
+            padding: 18px;
+            border-radius: 50px; /* 완전 둥근 알약 모양 */
             border: none;
-            background: var(--accent-blue);
+            background: var(--accent-coral);
             color: white;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255, 138, 128, 0.4);
+            transition: background 0.2s;
         }
+        .btn-setup:hover { background: var(--button-hover); }
 
         /* 모달 스타일 */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--modal-overlay);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 100;
         }
         .modal-content {
-            background: #2c2c2e;
+            background: var(--card-bg);
             width: 85%;
-            max-width: 350px;
-            padding: 30px;
-            border-radius: 28px;
+            max-width: 360px;
+            padding: 35px;
+            border-radius: 40px; /* 모달도 아주 둥글게 */
             text-align: center;
+            box-shadow: var(--shadow-soft);
         }
-        .modal-title { margin-bottom: 24px; font-size: 1.2rem; }
+        .modal-title { margin-bottom: 28px; font-size: 1.3rem; font-weight: 800; color: var(--text-main); }
+        
         .device-btn {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 12px;
-            border-radius: 12px;
-            border: none;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 16px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            font-size: 1.05rem;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            transition: all 0.2s;
         }
-        .btn-ios { background: #eee; color: #000; }
-        .btn-android { background: #3ddc84; color: #000; }
-        .btn-close { background: transparent; color: var(--text-sub); margin-top: 10px; }
+        .btn-ios { background: #F5F5F5; color: #333; }
+        .btn-android { background: #E8F5E9; color: #2E7D32; }
+        
+        .device-btn:hover { transform: scale(1.02); }
+        .btn-ios:hover { border-color: #ccc; background: white; }
+        .btn-android:hover { border-color: var(--accent-mint); background: white; }
+        
+        .btn-close { background: transparent; color: var(--text-sub); margin-top: 15px; border: none; font-weight: 600; cursor: pointer;}
 
         /* 가이드 섹션 */
         .guide-page {
@@ -116,47 +142,54 @@
             position: absolute;
             top: 0; left: 0; width: 100%;
             background: var(--bg-color);
-            padding: 40px 20px 100px 20px;
+            padding: 50px 25px 120px 25px;
             min-height: 100vh;
         }
-        .guide-header { margin-bottom: 30px; }
-        .guide-step { margin-bottom: 30px; }
-        .step-num { color: var(--accent-blue); font-weight: 800; font-size: 0.9rem; margin-bottom: 4px; }
-        .guide-step h3 { font-size: 1.2rem; margin-bottom: 10px; }
-        .guide-step p { color: #ccc; font-size: 0.95rem; margin-bottom: 15px; }
+        .guide-header { margin-bottom: 40px; text-align: center;}
+        .guide-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
+        .guide-step { margin-bottom: 35px; background: white; padding: 25px; border-radius: 28px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #FFF0DF; }
+        .step-num { color: var(--accent-coral); font-weight: 900; font-size: 1rem; margin-bottom: 8px; display: inline-block; background: #FFEBEE; padding: 4px 12px; border-radius: 20px;}
+        .guide-step h3 { font-size: 1.3rem; margin-bottom: 12px; font-weight: 800; }
+        .guide-step p { color: var(--text-main); font-size: 1rem; margin-bottom: 15px; line-height: 1.7; }
+        
+        /* 코드 박스 밝게 변경 */
         .code-box {
-            background: #1c1c1e;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.85rem;
+            background: #FFF3E0; /* 아주 연한 주황색 배경 */
+            padding: 18px;
+            border-radius: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
             word-break: break-all;
-            border: 1px solid #333;
-            color: var(--accent-green);
+            border: 2px dashed var(--accent-coral);
+            color: #D84315;
+            font-weight: 600;
+            text-align: center;
         }
 
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; width: 100%;
-            padding: 20px;
-            background: linear-gradient(transparent, var(--bg-color) 30%);
+            padding: 25px;
+            /* 배경색과 자연스럽게 섞이는 그라데이션 */
+            background: linear-gradient(to top, var(--bg-color) 50%, transparent);
             display: flex;
             justify-content: center;
+            pointer-events: none; /* 버튼 외 영역 클릭 방지 */
         }
         .btn-home {
-            background: #333;
+            background: var(--text-main);
             color: white;
-            padding: 12px 30px;
+            padding: 14px 35px;
             border-radius: 50px;
             border: none;
-            font-weight: 600;
-        }
-
-        /* 입력 폼 */
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; font-size: 0.8rem; color: var(--text-sub); margin-bottom: 5px; }
-        .input-group input {
-            width: 100%; padding: 12px; background: #3a3a3c; border: none; border-radius: 8px; color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(93, 64, 55, 0.3);
+            cursor: pointer;
+            pointer-events: auto; /* 버튼만 클릭 가능 */
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
     </style>
 </head>
@@ -164,32 +197,32 @@
 
     <div id="home" class="container">
         <header>
-            <h1>해솔드림</h1>
-            <p>해와 소나무 배경화면</p>
+            <h1>해솔드림<span class="brand-emoji">☀️🌲</span></h1>
+            <p>당신의 하루를 밝히는 배경화면</p>
         </header>
 
         <div class="card">
             <div class="preview-img">
-                <img src="https://via.placeholder.com/375x812/1c1c1e/ffffff?text=Life+Calendar" alt="Life Preview">
+                <img src="https://via.placeholder.com/375x812/FFE0B2/FF8A80?text=Life+Calendar+✨" alt="Life Preview">
             </div>
             <div class="card-info">
-                <h2>인생 달력 (Life)</h2>
-                <p>내 인생 전체를 주 단위로 시각화하여 남은 시간을 체감합니다.</p>
+                <h2>인생 달력 (Life) 🌱</h2>
+                <p>나의 소중한 인생을 주 단위로 시각화해보세요. 남은 날들을 더 알차게!</p>
                 <button class="btn-setup" onclick="openModal('life')">
-                    <span>⚙️</span> 설정하기
+                    <span>✨ 설정 시작하기</span>
                 </button>
             </div>
         </div>
 
         <div class="card">
             <div class="preview-img">
-                <img src="https://via.placeholder.com/375x812/1c1c1e/ffffff?text=Year+Calendar" alt="Year Preview">
+                <img src="https://via.placeholder.com/375x812/B9F6CA/00C853?text=Year+Calendar+📅" alt="Year Preview">
             </div>
             <div class="card-info">
-                <h2>올해 달력 (Year)</h2>
-                <p>2026년의 하루하루가 채워지는 과정을 확인하세요.</p>
+                <h2>올해 달력 (Year) 📅</h2>
+                <p>2026년, 오늘은 어디쯤 왔을까요? 하루하루 채워가는 즐거움.</p>
                 <button class="btn-setup" onclick="openModal('year')">
-                    <span>⚙️</span> 설정하기
+                    <span>✨ 설정 시작하기</span>
                 </button>
             </div>
         </div>
@@ -197,14 +230,14 @@
 
     <div id="deviceModal" class="modal">
         <div class="modal-content">
-            <h3 class="modal-title">기기를 선택해주세요</h3>
+            <h3 class="modal-title">어떤 기기를 쓰시나요? 🤔</h3>
             <button class="device-btn btn-ios" onclick="goToGuide('ios')">
-                <span></span> iPhone (iOS)
+                <span>🍎</span> 아이폰 (iOS)
             </button>
             <button class="device-btn btn-android" onclick="goToGuide('android')">
-                <span>🤖</span> Android
+                <span>🤖</span> 안드로이드
             </button>
-            <button class="device-btn btn-close" onclick="closeModal()">취소</button>
+            <button class="btn-close" onclick="closeModal()">다음에 할게요</button>
         </div>
     </div>
 
@@ -212,7 +245,7 @@
         <div id="guideContent">
             </div>
         <div class="bottom-nav">
-            <button class="btn-home" onclick="backToHome()">홈으로 돌아가기</button>
+            <button class="btn-home" onclick="backToHome()">🏠 홈으로 돌아가기</button>
         </div>
     </div>
 
@@ -221,7 +254,11 @@
 
         function openModal(type) {
             currentType = type;
-            document.getElementById('deviceModal').style.display = 'flex';
+            // 모달 열 때 부드러운 효과
+            const modal = document.getElementById('deviceModal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '0';
+            setTimeout(() => { modal.style.opacity = '1'; }, 10);
         }
 
         function closeModal() {
@@ -229,67 +266,69 @@
         }
 
         function backToHome() {
+            window.scrollTo(0, 0);
             document.getElementById('guidePage').style.display = 'none';
             document.getElementById('home').style.display = 'block';
-            window.scrollTo(0, 0);
         }
 
         function goToGuide(device) {
             closeModal();
             document.getElementById('home').style.display = 'none';
             const content = document.getElementById('guideContent');
+            const typeTitle = currentType === 'life' ? '인생 달력 🌱' : '올해 달력 📅';
             
             if (device === 'ios') {
                 content.innerHTML = `
                     <div class="guide-header">
-                        <h2>iOS 설치 가이드 (${currentType === 'life' ? '인생' : '올해'})</h2>
-                        <p>단축어 앱을 활용한 자동화 설정</p>
+                        <h2>iOS 설치 가이드 🍎<br>(${typeTitle})</h2>
+                        <p>'단축어' 앱으로 자동 배경화면 꾸미기</p>
                     </div>
                     
                     <div class="guide-step">
-                        <p class="step-num">STEP 1</p>
+                        <p class="step-num">STEP 1 ⚡️</p>
                         <h3>단축어 만들기</h3>
-                        <p>'단축어' 앱을 열고 새 단축어를 생성하세요. 'URL 내용 가져오기' 동작을 추가하고 아래 주소를 입력합니다.</p>
+                        <p>아이폰의 <b>'단축어'</b> 앱을 열고 새 단축어를 만들어주세요. <b>'URL 내용 가져오기'</b> 동작을 추가하고 아래 마법의 주소를 입력합니다!</p>
                         <div class="code-box">https://thelifecalendar.com/api/generate?type=${currentType}</div>
                     </div>
 
                     <div class="guide-step">
-                        <p class="step-num">STEP 2</p>
+                        <p class="step-num">STEP 2 🎨</p>
                         <h3>배경화면 설정 추가</h3>
-                        <p>'잠금 화면 배경화면으로 설정' 동작을 추가합니다. '미리보기 표시'를 끕니다.</p>
+                        <p>이어서 <b>'잠금 화면 배경화면으로 설정'</b> 동작을 추가해주세요. 꿀팁: '미리보기 표시'는 꺼두는 게 깔끔해요!</p>
                     </div>
 
                     <div class="guide-step">
-                        <p class="step-num">STEP 3</p>
-                        <h3>자동화 등록</h3>
-                        <p>'자동화' 탭에서 '특정 시간(예: 오전 6:00)'을 조건으로 방금 만든 단축어가 실행되도록 설정하세요.</p>
+                        <p class="step-num">STEP 3 ⏰</p>
+                        <h3>매일매일 자동으로!</h3>
+                        <p>'자동화' 탭에서 <b>'특정 시간(예: 오전 7시)'</b>에 방금 만든 단축어가 실행되도록 설정하면 끝! 매일 아침 새로운 배경화면이 반겨줄 거예요.</p>
                     </div>
                 `;
             } else {
                 content.innerHTML = `
                     <div class="guide-header">
-                        <h2>Android 설치 가이드 (${currentType === 'life' ? '인생' : '올해'})</h2>
-                        <p>MacroDroid 앱을 활용한 자동화 설정</p>
+                        <h2>안드로이드 설치 가이드 🤖<br>(${typeTitle})</h2>
+                        <p>'MacroDroid' 앱으로 자동 배경화면 꾸미기</p>
                     </div>
                     
                     <div class="guide-step">
-                        <p class="step-num">STEP 1</p>
-                        <h3>필수 앱 설치</h3>
-                        <p>Play 스토어에서 <b>MacroDroid</b> 앱을 설치하세요.</p>
+                        <p class="step-num">STEP 1 📦</p>
+                        <h3>필수 앱 준비</h3>
+                        <p>Play 스토어에서 <b>'MacroDroid'</b> 앱을 설치해주세요. 이 앱이 매일 배경화면을 바꿔줄 요정입니다!</p>
                     </div>
 
                     <div class="guide-step">
-                        <p class="step-num">STEP 2</p>
-                        <h3>매크로 생성</h3>
-                        <p>트리거: 요일/시간별 서비스 → 매일 00:01 설정</p>
-                        <p>작업: HTTP 요청 (GET) → 아래 URL 입력</p>
+                        <p class="step-num">STEP 2 🪄</p>
+                        <h3>매크로 주문 외우기</h3>
+                        <p>새 매크로를 만들고 아래 순서대로 설정해주세요.</p>
+                        <p>🔹 <b>트리거:</b> 매일 특정 시간 (예: 00:01)</p>
+                        <p>🔹 <b>작업 1:</b> HTTP 요청(GET) 선택 후 아래 주소 입력</p>
                         <div class="code-box">https://thelifecalendar.com/api/generate?type=${currentType}</div>
                     </div>
 
                     <div class="guide-step">
-                        <p class="step-num">STEP 3</p>
-                        <h3>배경화면 적용</h3>
-                        <p>작업: 배경화면 설정 → 다운로드된 이미지 경로 선택</p>
+                        <p class="step-num">STEP 3 🖼️</p>
+                        <h3>배경화면 짠!</h3>
+                        <p>🔹 <b>작업 2:</b> '배경화면 설정'을 선택하고, 방금 다운로드된 이미지가 저장되는 경로를 지정해주시면 완료!</p>
                     </div>
                 `;
             }
