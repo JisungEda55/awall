@@ -3,17 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallpaper Maker</title>
+<title>Daily Wallpaper Generator</title>
 
 <style>
 body{
   margin:0;
-  background:#f2f2f2;
+  background:#f5f5f5;
+  font-family:sans-serif;
   display:flex;
   flex-direction:column;
   align-items:center;
-  font-family:sans-serif;
-  color:#111;
 }
 
 #canvasWrapper{
@@ -32,22 +31,17 @@ canvas{
 #tools{
   width:100%;
   max-width:500px;
-  background:#ffffff;
   padding:12px;
+  background:white;
+  border-top:1px solid #ddd;
   display:flex;
   flex-direction:column;
   gap:8px;
-  box-sizing:border-box;
-  border-top:1px solid #ddd;
 }
 
-input, button{
+input, button, select{
   padding:10px;
-  font-size:16px;
-}
-
-label{
-  font-size:14px;
+  font-size:15px;
 }
 </style>
 </head>
@@ -58,17 +52,20 @@ label{
 </div>
 
 <div id="tools">
+  <select id="defaultImageSelect" onchange="selectDefaultImage()">
+    <option value="">기본 이미지 선택</option>
+    <option value="image1.jpg">기본 이미지 1</option>
+    <option value="image2.jpg">기본 이미지 2</option>
+    <option value="image3.jpg">기본 이미지 3</option>
+  </select>
+
   <input type="file" id="imageInput" accept="image/*">
-  <input type="text" id="textInput" placeholder="텍스트 입력">
-  <button onclick="addText()">텍스트 추가</button>
 
-  <label>D-Day 날짜 설정</label>
-  <input type="date" id="ddayInput">
+  <input type="text" id="quoteInput" placeholder="문구 직접 입력">
 
-  <label>
-    <input type="checkbox" id="toggleProgress">
-    Progress Bar 표시
-  </label>
+  <button onclick="randomQuote()">랜덤 명언</button>
+
+  <input type="time" id="timeInput" value="18:00">
 
   <button onclick="render()">다시 그리기</button>
   <button onclick="saveImage()">저장</button>
@@ -79,12 +76,43 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 let currentImage = null;
-let texts = [];
-let startDate = new Date(); // 오늘 기준 시작
 
-function clearCanvas(){
-  ctx.fillStyle = "white";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+const quotes = [
+  "오늘도 한 걸음.",
+  "꾸준함이 답이다.",
+  "우리는 계속 간다.",
+  "멈추지 말자.",
+  "지금 이 순간이 중요하다.",
+  "천천히, 하지만 계속.",
+  "어제보다 나은 오늘.",
+  "결국 해낸다.",
+  "포기하지 않는다.",
+  "함께라서 가능하다."
+];
+
+function formatDate(){
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  return `${y}.${m}.${d}`;
+}
+
+function randomQuote(){
+  const r = quotes[Math.floor(Math.random()*quotes.length)];
+  document.getElementById("quoteInput").value = r;
+  render();
+}
+
+function selectDefaultImage(){
+  const val = document.getElementById("defaultImageSelect").value;
+  if(!val) return;
+  const img = new Image();
+  img.onload = function(){
+    currentImage = img;
+    render();
+  }
+  img.src = val;
 }
 
 document.getElementById("imageInput").addEventListener("change", function(e){
@@ -103,90 +131,48 @@ document.getElementById("imageInput").addEventListener("change", function(e){
   reader.readAsDataURL(file);
 });
 
-function addText(){
-  const value = document.getElementById("textInput").value;
-  if(!value) return;
-  texts.push(value);
-  document.getElementById("textInput").value="";
-  render();
-}
-
-function drawProgressBar(){
-  const targetStr = document.getElementById("ddayInput").value;
-  if(!targetStr) return;
-
-  const now = new Date();
-  const target = new Date(targetStr);
-
-  const total = target - startDate;
-  const current = now - startDate;
-
-  let progress = current / total;
-  if(progress < 0) progress = 0;
-  if(progress > 1) progress = 1;
-
-  const barWidth = canvas.width * 0.8;
-  const barHeight = 40;
-  const x = (canvas.width - barWidth)/2;
-  const y = canvas.height - 200;
-
-  // 배경 바
-  ctx.fillStyle = "#ddd";
-  ctx.fillRect(x, y, barWidth, barHeight);
-
-  // 진행 바
-  ctx.fillStyle = "#4caf50";
-  ctx.fillRect(x, y, barWidth * progress, barHeight);
-
-  // 텍스트
-  const diffDays = Math.ceil((target - now)/(1000*60*60*24));
-  ctx.fillStyle = "#111";
-  ctx.font = "bold 40px sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText(
-    diffDays >= 0 ? "D-" + diffDays : "D+" + Math.abs(diffDays),
-    canvas.width/2,
-    y - 40
-  );
-}
-
 function render(){
-  clearCanvas();
+  ctx.fillStyle = "white";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // 이미지 중앙 배치
+  // 상단 날짜
+  ctx.fillStyle = "#000";
+  ctx.font = "bold 70px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(formatDate(), canvas.width/2, 200);
+
+  // 중앙 이미지
   if(currentImage){
     const maxWidth = canvas.width * 0.8;
     const scale = maxWidth / currentImage.width;
-    const imgWidth = currentImage.width * scale;
-    const imgHeight = currentImage.height * scale;
+    const imgW = currentImage.width * scale;
+    const imgH = currentImage.height * scale;
 
-    const x = (canvas.width - imgWidth)/2;
-    const y = (canvas.height - imgHeight)/2 - 300;
+    const x = (canvas.width - imgW)/2;
+    const y = (canvas.height - imgH)/2 - 200;
 
-    ctx.drawImage(currentImage, x, y, imgWidth, imgHeight);
-
-    // 텍스트 여러 줄
-    ctx.fillStyle = "#111";
-    ctx.textAlign = "center";
-    ctx.font = "bold 70px sans-serif";
-
-    let textY = y + imgHeight + 120;
-    texts.forEach(t=>{
-      ctx.fillText(t, canvas.width/2, textY);
-      textY += 120;
-    });
+    ctx.drawImage(currentImage, x, y, imgW, imgH);
   }
 
-  // Progress Bar
-  if(document.getElementById("toggleProgress").checked){
-    drawProgressBar();
-  }
+  // 하단 문구
+  const quote = document.getElementById("quoteInput").value;
+  ctx.font = "bold 80px sans-serif";
+  ctx.fillText(quote, canvas.width/2, canvas.height - 500);
+
+  // 방송 시간
+  const time = document.getElementById("timeInput").value;
+  ctx.font = "60px sans-serif";
+  ctx.fillText("ON " + time, canvas.width/2, canvas.height - 350);
+
+  // 닉네임 고정
+  ctx.font = "50px sans-serif";
+  ctx.fillText("@HaesolEyo", canvas.width/2, canvas.height - 250);
 }
 
 function saveImage(){
   const link = document.createElement("a");
-  link.download="wallpaper.png";
-  link.href=canvas.toDataURL("image/png");
+  link.download = formatDate()+"_wallpaper.png";
+  link.href = canvas.toDataURL("image/png");
   link.click();
 }
 
