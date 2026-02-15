@@ -8,20 +8,19 @@
 <style>
 body{
   margin:0;
-  background:#111;
+  background:#f2f2f2;
   display:flex;
   flex-direction:column;
   align-items:center;
   font-family:sans-serif;
-  color:white;
+  color:#111;
 }
 
 #canvasWrapper{
   width:100%;
   max-width:500px;
   aspect-ratio:1440/3120;
-  background:black;
-  position:relative;
+  background:white;
 }
 
 canvas{
@@ -33,17 +32,22 @@ canvas{
 #tools{
   width:100%;
   max-width:500px;
-  background:#222;
-  padding:10px;
+  background:#ffffff;
+  padding:12px;
   display:flex;
   flex-direction:column;
   gap:8px;
   box-sizing:border-box;
+  border-top:1px solid #ddd;
 }
 
 input, button{
   padding:10px;
   font-size:16px;
+}
+
+label{
+  font-size:14px;
 }
 </style>
 </head>
@@ -56,7 +60,17 @@ input, button{
 <div id="tools">
   <input type="file" id="imageInput" accept="image/*">
   <input type="text" id="textInput" placeholder="텍스트 입력">
-  <button onclick="addText()">텍스트 적용</button>
+  <button onclick="addText()">텍스트 추가</button>
+
+  <label>D-Day 날짜 설정</label>
+  <input type="date" id="ddayInput">
+
+  <label>
+    <input type="checkbox" id="toggleProgress">
+    Progress Bar 표시
+  </label>
+
+  <button onclick="render()">다시 그리기</button>
   <button onclick="saveImage()">저장</button>
 </div>
 
@@ -65,14 +79,13 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 let currentImage = null;
-let currentText = "";
+let texts = [];
+let startDate = new Date(); // 오늘 기준 시작
 
-// 초기 상태 (빈 캔버스)
 function clearCanvas(){
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "white";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 }
-clearCanvas();
 
 document.getElementById("imageInput").addEventListener("change", function(e){
   const file = e.target.files[0];
@@ -91,44 +104,93 @@ document.getElementById("imageInput").addEventListener("change", function(e){
 });
 
 function addText(){
-  currentText = document.getElementById("textInput").value;
+  const value = document.getElementById("textInput").value;
+  if(!value) return;
+  texts.push(value);
+  document.getElementById("textInput").value="";
   render();
+}
+
+function drawProgressBar(){
+  const targetStr = document.getElementById("ddayInput").value;
+  if(!targetStr) return;
+
+  const now = new Date();
+  const target = new Date(targetStr);
+
+  const total = target - startDate;
+  const current = now - startDate;
+
+  let progress = current / total;
+  if(progress < 0) progress = 0;
+  if(progress > 1) progress = 1;
+
+  const barWidth = canvas.width * 0.8;
+  const barHeight = 40;
+  const x = (canvas.width - barWidth)/2;
+  const y = canvas.height - 200;
+
+  // 배경 바
+  ctx.fillStyle = "#ddd";
+  ctx.fillRect(x, y, barWidth, barHeight);
+
+  // 진행 바
+  ctx.fillStyle = "#4caf50";
+  ctx.fillRect(x, y, barWidth * progress, barHeight);
+
+  // 텍스트
+  const diffDays = Math.ceil((target - now)/(1000*60*60*24));
+  ctx.fillStyle = "#111";
+  ctx.font = "bold 40px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    diffDays >= 0 ? "D-" + diffDays : "D+" + Math.abs(diffDays),
+    canvas.width/2,
+    y - 40
+  );
 }
 
 function render(){
   clearCanvas();
 
+  // 이미지 중앙 배치
   if(currentImage){
-    // 이미지 중앙 배치
     const maxWidth = canvas.width * 0.8;
     const scale = maxWidth / currentImage.width;
     const imgWidth = currentImage.width * scale;
     const imgHeight = currentImage.height * scale;
 
-    const x = (canvas.width - imgWidth) / 2;
-    const y = (canvas.height - imgHeight) / 2 - 200;
+    const x = (canvas.width - imgWidth)/2;
+    const y = (canvas.height - imgHeight)/2 - 300;
 
     ctx.drawImage(currentImage, x, y, imgWidth, imgHeight);
 
-    if(currentText){
-      ctx.fillStyle = "white";
-      ctx.font = "bold 80px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(
-        currentText,
-        canvas.width / 2,
-        y + imgHeight + 150
-      );
-    }
+    // 텍스트 여러 줄
+    ctx.fillStyle = "#111";
+    ctx.textAlign = "center";
+    ctx.font = "bold 70px sans-serif";
+
+    let textY = y + imgHeight + 120;
+    texts.forEach(t=>{
+      ctx.fillText(t, canvas.width/2, textY);
+      textY += 120;
+    });
+  }
+
+  // Progress Bar
+  if(document.getElementById("toggleProgress").checked){
+    drawProgressBar();
   }
 }
 
 function saveImage(){
   const link = document.createElement("a");
-  link.download = "wallpaper.png";
-  link.href = canvas.toDataURL("image/png");
+  link.download="wallpaper.png";
+  link.href=canvas.toDataURL("image/png");
   link.click();
 }
+
+render();
 </script>
 
 </body>
