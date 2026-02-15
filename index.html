@@ -9,238 +9,341 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(to bottom, #000, #111);
+            background: linear-gradient(to bottom, #000, #0a0a0a);
             color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             min-height: 100vh;
-            overflow-y: auto;
+            overflow-x: hidden;
         }
         .header {
             text-align: center;
-            padding: 40px 20px 20px;
-            width: 100%;
+            padding: 50px 20px 30px;
         }
         .title {
-            font-size: 3.5rem;
-            font-weight: 800;
+            font-size: 3.8rem;
+            font-weight: 900;
             margin: 0;
-            letter-spacing: -1px;
+            letter-spacing: -2px;
+            background: linear-gradient(90deg, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .subtitle {
-            font-size: 1.4rem;
-            margin-top: 8px;
-            color: #aaa;
-            font-weight: 400;
+            font-size: 1.5rem;
+            color: #bbb;
+            margin-top: 10px;
+            font-weight: 300;
         }
         .categories {
+            padding: 0 20px 60px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            width: 100%;
-            padding: 0 20px 40px;
-            gap: 32px;
+            gap: 40px;
         }
         .category-card {
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 16px;
+            background: rgba(20,20,20,0.9);
+            border-radius: 24px;
             overflow: hidden;
-            width: 90%;
-            max-width: 340px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(100,100,100,0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
         }
-        .preview-image {
+        .preview {
             width: 100%;
             height: auto;
             display: block;
         }
-        .card-footer {
-            padding: 20px;
+        .setup-area {
+            padding: 30px 20px;
             text-align: center;
         }
         .setup-btn {
-            background: linear-gradient(135deg, #444, #222);
-            color: white;
+            background: linear-gradient(145deg, #333, #111);
+            color: #fff;
             border: none;
             border-radius: 50%;
-            width: 90px;
-            height: 90px;
-            font-size: 1.1rem;
+            width: 110px;
+            height: 110px;
+            font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: all 0.2s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .setup-btn:hover {
-            transform: scale(1.08);
-            background: linear-gradient(135deg, #555, #333);
+        .setup-btn:active {
+            transform: scale(0.95);
         }
-        .modal {
+        /* 가이드 섹션 (초기 숨김) */
+        .guide-section {
             display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
+            padding: 40px 24px 80px;
+            background: #000;
+            min-height: 100vh;
+        }
+        .guide-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .guide-title {
+            font-size: 2.2rem;
+            margin: 0 0 12px;
+        }
+        .guide-desc {
+            color: #aaa;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+        .step {
+            margin-bottom: 50px;
+        }
+        .step-number {
+            background: #222;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(4px);
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.3rem;
         }
-        .modal-content {
-            background: #111;
-            border-radius: 20px;
-            padding: 28px 24px;
-            width: 88%;
-            max-width: 360px;
-            text-align: center;
-            position: relative;
-            border: 1px solid #333;
-        }
-        .close-btn {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            font-size: 2rem;
-            color: #777;
-            cursor: pointer;
-        }
-        .close-btn:hover {
-            color: #fff;
-        }
-        .modal-title {
+        .step-title {
             font-size: 1.6rem;
-            margin: 0 0 20px;
+            margin: 20px 0 16px;
         }
-        .modal-desc {
-            color: #bbb;
-            margin-bottom: 28px;
-            font-size: 0.95rem;
-            line-height: 1.4;
+        .input-group {
+            margin: 20px 0;
         }
-        .device-grid {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
-        .device-option {
-            background: #222;
-            border-radius: 16px;
-            padding: 20px 16px;
-            width: 130px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid #333;
-        }
-        .device-option:hover {
-            background: #2a2a2a;
-            transform: translateY(-4px);
-            border-color: #555;
-        }
-        .device-icon {
-            font-size: 3.2rem;
-            margin-bottom: 12px;
-        }
-        .device-name {
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
             font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
         }
-        .device-type {
-            font-size: 0.8rem;
-            color: #aaa;
+        .birthday-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="number"], select {
+            background: #1a1a1a;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .birthday-inputs input {
+            flex: 1;
+        }
+        select {
+            appearance: none;
+            background: #1a1a1a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23aaa' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 12px center;
+            background-size: 12px;
+        }
+        .note {
+            background: rgba(80,80,0,0.2);
+            border-left: 4px solid #ffcc00;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .important {
+            color: #ffdd44;
+            font-weight: bold;
+        }
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1 class="title">해솔드림</h1>
-        <p class="subtitle">해와 소나무 배경화면</p>
-    </div>
-
-    <div class="categories">
-        <div class="category-card">
-            <img class="preview-image" src="https://via.placeholder.com/340x680/111/eee?text=Life+Calendar+Preview" alt="Life Calendar">
-            <div class="card-footer">
-                <button class="setup-btn" onclick="openDeviceModal('life')">설정</button>
-            </div>
+    <div id="home">
+        <div class="header">
+            <h1 class="title">해솔드림</h1>
+            <p class="subtitle">해와 소나무 배경화면</p>
         </div>
 
-        <div class="category-card">
-            <img class="preview-image" src="https://via.placeholder.com/340x680/111/eee?text=Year+Calendar+Preview" alt="Year Calendar">
-            <div class="card-footer">
-                <button class="setup-btn" onclick="openDeviceModal('year')">설정</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 기기 선택 모달 -->
-    <div id="deviceModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 class="modal-title">당신의 기기를 선택하세요</h2>
-            <p class="modal-desc">선택한 기기에 맞는 설치 가이드를 확인할 수 있습니다.</p>
-
-            <div class="device-grid">
-                <div class="device-option" onclick="goToGuide('ios')">
-                    <div class="device-icon"></div>
-                    <div class="device-name">iPhone</div>
-                    <div class="device-type">iOS Shortcuts</div>
+        <div class="categories">
+            <div class="category-card">
+                <img class="preview" src="https://via.placeholder.com/375x812/111/eee?text=Life+Calendar+Lock+Screen" alt="Life Calendar">
+                <div class="setup-area">
+                    <button class="setup-btn" onclick="showGuide('ios')">iOS 설정</button>
+                    <button class="setup-btn" onclick="showGuide('android')" style="margin-left:20px;">Android 설정</button>
                 </div>
+            </div>
 
-                <div class="device-option" onclick="goToGuide('android')">
-                    <div class="device-icon">🤖</div>
-                    <div class="device-name">Android</div>
-                    <div class="device-type">MacroDroid</div>
+            <div class="category-card">
+                <img class="preview" src="https://via.placeholder.com/375x812/111/eee?text=Year+Calendar+Preview" alt="Year Calendar">
+                <div class="setup-area">
+                    <button class="setup-btn" onclick="showGuide('ios_year')">iOS 설정</button>
+                    <button class="setup-btn" onclick="showGuide('android_year')" style="margin-left:20px;">Android 설정</button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- iOS Life Calendar Guide -->
+    <div id="guide-ios" class="guide-section">
+        <div class="guide-header">
+            <h2 class="guide-title">Installation Steps</h2>
+            <p class="guide-desc">First, define your wallpaper settings. Then create an automation to run daily. Finally, add the shortcut actions to update your lock screen.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h3 class="step-title">Define your Wallpaper</h3>
+            <div class="input-group">
+                <div class="label">Your Birthday</div>
+                <div class="birthday-inputs">
+                    <input type="number" placeholder="Year" min="1900" max="2025">
+                    <input type="number" placeholder="Month" min="1" max="12">
+                    <input type="number" placeholder="Day" min="1" max="31">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="label">iPhone Model</div>
+                <select>
+                    <option>iPhone 15 / 15 Pro / 16</option>
+                    <option>iPhone 14 / 14 Pro</option>
+                    <!-- 더 많은 옵션 추가 가능 -->
+                </select>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h3 class="step-title">Create Automation</h3>
+            <p>Open <strong>Shortcuts</strong> app → Go to Automation tab → New Automation → Time of Day → 6:00 AM → Repeat "Daily" → Select "Run Immediately" → "Create New Shortcut"</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h3 class="step-title">Create Shortcut</h3>
+            <p>ADD THESE ACTIONS:</p>
+            <ol style="padding-left:20px; line-height:2;">
+                <li>"Get Contents of URL" → paste the following URL (완료 후 생성된 URL 입력)</li>
+                <li>"Set Wallpaper Photo" → choose "Lock Screen"</li>
+            </ol>
+            <div class="note">
+                <span class="important">Important:</span> In "Set Wallpaper Photo", tap the arrow (→) to show options → disable both "Crop to Subject" and "Show Preview"<br>
+                This prevents iOS from cropping and asking for confirmation each time.
+            </div>
+        </div>
+
+        <button class="back-btn" onclick="backToHome()">돌아가기</button>
+    </div>
+
+    <!-- Android Life Calendar Guide -->
+    <div id="guide-android" class="guide-section">
+        <div class="guide-header">
+            <h2 class="guide-title">Installation Steps</h2>
+            <p class="guide-desc">First, define your wallpaper settings. Then set up MacroDroid to automatically update your wallpaper daily.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h3 class="step-title">Define your Wallpaper</h3>
+            <div class="input-group">
+                <div class="label">Your Birthday</div>
+                <div class="birthday-inputs">
+                    <input type="number" placeholder="Year">
+                    <input type="number" placeholder="Month">
+                    <input type="number" placeholder="Day">
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="label">Phone Model</div>
+                <input type="text" placeholder="Search for your phone model...">
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h3 class="step-title">Prerequisites</h3>
+            <p>Install <strong>MacroDroid</strong> from Google Play Store.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h3 class="step-title">Setup Macro</h3>
+            <p>Open MacroDroid → Add Macro</p>
+            <p>Trigger: Date/Time → Day/Time → Set time to 00:01:00 → Activate all weekdays</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <h3 class="step-title">Configure Actions</h3>
+            <p>4.1 Download Image</p>
+            <ul>
+                <li>Web Interactions → HTTP Request → GET</li>
+                <li>Paste the URL (Step 1 완료 후 생성)</li>
+                <li>Block next actions until complete</li>
+                <li>Save HTTP response to file: /Download/life.png</li>
+            </ul>
+            <p>4.2 Set Wallpaper</p>
+            <ul>
+                <li>Device Settings → Set Wallpaper</li>
+                <li>Choose Image and Screen</li>
+                <li>Enter: /Download/life.png</li>
+            </ul>
+            <div class="note">
+                <span class="important">Important:</span> Use the exact same folder and filename in both actions.
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <h3 class="step-title">Finalize</h3>
+            <p>Give the macro a name → Tap Create Macro</p>
+        </div>
+
+        <button class="back-btn" onclick="backToHome()">돌아가기</button>
+    </div>
+
+    <!-- Year Calendar Guides는 비슷하게 복사해서 추가 가능 (현재는 Life 중심으로 구현) -->
+    <div id="guide-ios_year" class="guide-section">
+        <h2 class="guide-title">Year Calendar - iOS 설치 가이드</h2>
+        <p class="guide-desc">Life Calendar와 유사하나 Year 버전에 맞게 URL 및 설정이 다를 수 있습니다. (상세 내용은 Life와 동일하게 적용)</p>
+        <!-- Life와 동일한 구조 복사 가능 -->
+        <button class="back-btn" onclick="backToHome()">돌아가기</button>
+    </div>
+
+    <div id="guide-android_year" class="guide-section">
+        <h2 class="guide-title">Year Calendar - Android 설치 가이드</h2>
+        <p class="guide-desc">Life Calendar와 유사하나 Year 버전에 맞게 조정.</p>
+        <button class="back-btn" onclick="backToHome()">돌아가기</button>
     </div>
 
     <script>
-        let currentType = 'life'; // life 또는 year
-
-        function openDeviceModal(type) {
-            currentType = type;
-            document.getElementById('deviceModal').style.display = 'flex';
+        function showGuide(type) {
+            document.getElementById('home').style.display = 'none';
+            const guides = ['guide-ios', 'guide-android', 'guide-ios_year', 'guide-android_year'];
+            guides.forEach(id => {
+                document.getElementById(id).style.display = (id === 'guide-' + type) ? 'block' : 'none';
+            });
         }
 
-        function closeModal() {
-            document.getElementById('deviceModal').style.display = 'none';
-        }
-
-        function goToGuide(os) {
-            closeModal();
-
-            let base = "https://thelifecalendar.com"; // 실제 사이트 URL
-            let path = "";
-
-            if (currentType === 'life') {
-                path = os === 'ios' ? "/life/ios" : "/life/android";
-            } else {
-                path = os === 'ios' ? "/year/ios" : "/year/android";
-            }
-
-            // 실제 서비스라면 아래처럼 실제 경로로 이동
-            // window.location.href = base + path;
-
-            // 지금은 예시로 알림 + 콘솔
-            alert(`[${currentType.toUpperCase()}] ${os.toUpperCase()} 설치 가이드로 이동합니다!\n\n예시 URL: ${base}${path}`);
-            console.log("이동 시도:", base + path);
-        }
-
-        // 모달 바깥 클릭 시 닫기
-        window.onclick = function(event) {
-            const modal = document.getElementById('deviceModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+        function backToHome() {
+            document.querySelectorAll('.guide-section').forEach(el => el.style.display = 'none');
+            document.getElementById('home').style.display = 'block';
+            window.scrollTo(0, 0);
         }
     </script>
 
