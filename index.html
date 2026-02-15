@@ -1,288 +1,123 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>해솔드림</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(to bottom, #000, #0f0f0f);
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        .header {
-            text-align: center;
-            padding: 60px 20px 40px;
-        }
-        .title {
-            font-size: 3.8rem;
-            font-weight: 900;
-            margin: 0;
-            letter-spacing: -1.5px;
-            background: linear-gradient(90deg, #ffffff, #cccccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .subtitle {
-            font-size: 1.5rem;
-            color: #bbbbbb;
-            margin-top: 12px;
-            font-weight: 300;
-        }
-        .categories {
-            padding: 0 20px 60px;
-            display: flex;
-            flex-direction: column;
-            gap: 48px;
-        }
-        .category-card {
-            background: rgba(25, 25, 25, 0.92);
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid rgba(80,80,80,0.4);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.8);
-        }
-        .preview-img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .setup-area {
-            padding: 32px 24px;
-            text-align: center;
-        }
-        .setup-btn {
-            background: linear-gradient(135deg, #444444, #222222);
-            color: white;
-            border: none;
-            border-radius: 999px;
-            width: 100px;
-            height: 100px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-            transition: all 0.18s;
-        }
-        .setup-btn:active {
-            transform: scale(0.96);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-        /* 모달 스타일 */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.88);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(6px);
-        }
-        .modal-content {
-            background: #111111;
-            border-radius: 24px;
-            padding: 32px 28px;
-            width: 86%;
-            max-width: 380px;
-            text-align: center;
-            border: 1px solid #333333;
-            position: relative;
-        }
-        .close-btn {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 2.4rem;
-            color: #666;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .close-btn:hover {
-            color: #ffffff;
-        }
-        .modal-title {
-            font-size: 1.7rem;
-            margin: 0 0 24px;
-            font-weight: 700;
-        }
-        .modal-desc {
-            color: #cccccc;
-            margin-bottom: 32px;
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-        .device-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-        }
-        .device-btn {
-            background: #222222;
-            border: 1px solid #444444;
-            border-radius: 16px;
-            padding: 20px 16px;
-            width: 140px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .device-btn:hover {
-            background: #2a2a2a;
-            transform: translateY(-6px);
-            border-color: #666666;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-        }
-        .device-icon {
-            font-size: 3.5rem;
-            margin-bottom: 12px;
-        }
-        .device-name {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .device-subtitle {
-            font-size: 0.85rem;
-            color: #aaaaaa;
-        }
-        /* 가이드 영역 (초기 숨김) */
-        .guide {
-            display: none;
-            padding: 40px 24px 100px;
-        }
-        .back-btn {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2a2a2a;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 14px 40px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streamer Wallpaper</title>
+<style>
+body {margin:0;background:#111;color:white;font-family:sans-serif;}
+#controls {background:#222;padding:10px;display:flex;flex-direction:column;gap:6px;}
+canvas {background:black;touch-action:none;}
+label{font-size:13px;}
+input,button{padding:6px;font-size:14px;}
+</style>
 </head>
 <body>
 
-    <div id="home">
-        <div class="header">
-            <h1 class="title">해솔드림</h1>
-            <p class="subtitle">해와 소나무 배경화면</p>
-        </div>
+<div id="controls">
+<label>닉네임 <input id="nick"></label>
+<label>메시지 <input id="msg"></label>
+<label>D-Day 날짜 <input type="date" id="dday"></label>
+<label>잠금 코드 <input id="lockInput"></label>
 
-        <div class="categories">
-            <!-- Life Calendar 카드 -->
-            <div class="category-card">
-                <img class="preview-img" src="https://via.placeholder.com/375x812/0a0a0a/cccccc?text=Life+Calendar+Preview" alt="Life Calendar Preview">
-                <div class="setup-area">
-                    <button class="setup-btn" onclick="openModal('life')">설정</button>
-                </div>
-            </div>
+<label><input type="checkbox" id="toggleNick" checked> 닉네임 표시</label>
+<label><input type="checkbox" id="toggleMsg" checked> 메시지 표시</label>
+<label><input type="checkbox" id="toggleDday" checked> D-Day 표시</label>
+<label><input type="checkbox" id="toggleSerial" checked> 시리얼 표시</label>
+<label><input type="checkbox" id="toggleSafe"> 시계 안전영역 표시</label>
 
-            <!-- Year Calendar 카드 -->
-            <div class="category-card">
-                <img class="preview-img" src="https://via.placeholder.com/375x812/0a0a0a/cccccc?text=Year+Calendar+Preview" alt="Year Calendar Preview">
-                <div class="setup-area">
-                    <button class="setup-btn" onclick="openModal('year')">설정</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<button onclick="generate()">적용</button>
+<button onclick="saveImage()">저장</button>
+</div>
 
-    <!-- 기기 선택 모달 -->
-    <div id="deviceModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 class="modal-title">기기 선택</h2>
-            <p class="modal-desc">설치 방법을 확인할 기기를 선택해주세요.</p>
+<canvas id="canvas"></canvas>
 
-            <div class="device-buttons">
-                <div class="device-btn" onclick="showGuide(currentType + '-ios')">
-                    <div class="device-icon"></div>
-                    <div class="device-name">iPhone</div>
-                    <div class="device-subtitle">Shortcuts</div>
-                </div>
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-                <div class="device-btn" onclick="showGuide(currentType + '-android')">
-                    <div class="device-icon">🤖</div>
-                    <div class="device-name">Android</div>
-                    <div class="device-subtitle">MacroDroid</div>
-                </div>
-            </div>
-        </div>
-    </div>
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight - document.getElementById("controls").offsetHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
-    <!-- 가이드 컨테이너들 -->
-    <div id="guide-life-ios" class="guide">
-        <h2>Life Calendar - iOS 설치 가이드</h2>
-        <p>1. 생년월일 입력 → 2. Shortcuts 앱에서 Automation 생성 → 3. 매일 6시 실행 → 4. Get Contents of URL + Set Wallpaper Photo 액션 추가</p>
-        <!-- 여기에 실제 상세 단계 내용 복사/붙여넣기 -->
-        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
-    </div>
+const params = new URLSearchParams(window.location.search);
 
-    <div id="guide-life-android" class="guide">
-        <h2>Life Calendar - Android 설치 가이드</h2>
-        <p>1. 생년월일 입력 → 2. MacroDroid 설치 → 3. 매일 새벽 매크로 생성 → 4. HTTP GET으로 이미지 다운로드 → 5. Wallpaper 설정</p>
-        <!-- 상세 단계 -->
-        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
-    </div>
+document.getElementById("nick").value = params.get("nick") || "";
+document.getElementById("msg").value = params.get("msg") || "";
+document.getElementById("dday").value = params.get("d") || "";
+const lockCode = params.get("lock") || "";
 
-    <div id="guide-year-ios" class="guide">
-        <h2>Year Calendar - iOS 설치 가이드</h2>
-        <p>Year 버전 전용 가이드 (Shortcuts 기반)...</p>
-        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
-    </div>
+const SERIAL = Math.floor(Math.random()*10000).toString().padStart(4,"0");
 
-    <div id="guide-year-android" class="guide">
-        <h2>Year Calendar - Android 설치 가이드</h2>
-        <p>Year 버전 전용 가이드 (MacroDroid 기반)...</p>
-        <button class="back-btn" onclick="backToHome()">홈으로 돌아가기</button>
-    </div>
+function calcDday(dateStr){
+  if(!dateStr) return "";
+  const target = new Date(dateStr);
+  const now = new Date();
+  const diff = Math.ceil((target-now)/(1000*60*60*24));
+  return diff>=0 ? "D-"+diff : "D+"+Math.abs(diff);
+}
 
-    <script>
-        let currentType = 'life'; // 'life' 또는 'year'
+function generate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        function openModal(type) {
-            currentType = type;
-            document.getElementById('deviceModal').style.display = 'flex';
-        }
+  // 배경
+  ctx.fillStyle="#000";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-        function closeModal() {
-            document.getElementById('deviceModal').style.display = 'none';
-        }
+  const nick = document.getElementById("nick").value;
+  const msg = document.getElementById("msg").value;
+  const dday = calcDday(document.getElementById("dday").value);
 
-        function showGuide(guideId) {
-            closeModal();
-            document.getElementById('home').style.display = 'none';
-            document.querySelectorAll('.guide').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.getElementById('guide-' + guideId).style.display = 'block';
-            window.scrollTo(0, 0);
-        }
+  ctx.fillStyle="white";
+  ctx.textAlign="center";
 
-        function backToHome() {
-            document.querySelectorAll('.guide').forEach(el => el.style.display = 'none');
-            document.getElementById('home').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
+  if(toggleNick.checked){
+    ctx.font="bold 40px sans-serif";
+    ctx.fillText(nick, canvas.width/2, canvas.height*0.6);
+  }
 
-        // 모달 바깥 클릭 닫기
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                closeModal();
-            }
-        }
-    </script>
+  if(toggleMsg.checked){
+    ctx.font="24px sans-serif";
+    ctx.fillText(msg, canvas.width/2, canvas.height*0.7);
+  }
 
+  if(toggleDday.checked){
+    ctx.font="20px sans-serif";
+    ctx.fillText(dday, canvas.width/2, canvas.height*0.8);
+  }
+
+  if(toggleSerial.checked){
+    ctx.font="16px monospace";
+    ctx.fillText("SERIAL #"+SERIAL, canvas.width/2, canvas.height*0.9);
+  }
+
+  if(toggleSafe.checked){
+    ctx.strokeStyle="red";
+    ctx.strokeRect(canvas.width*0.1, canvas.height*0.05,
+                   canvas.width*0.8, canvas.height*0.15);
+  }
+
+  // 잠금 오버레이
+  if(lockCode && document.getElementById("lockInput").value !== lockCode){
+    ctx.fillStyle="rgba(0,0,0,0.8)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    ctx.font="30px sans-serif";
+    ctx.fillText("LOCKED", canvas.width/2, canvas.height/2);
+  }
+}
+
+function saveImage(){
+  const link=document.createElement("a");
+  link.download="wallpaper.png";
+  link.href=canvas.toDataURL("image/png");
+  link.click();
+}
+
+generate();
+</script>
 </body>
 </html>
