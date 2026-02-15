@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haesol Daily</title>
+
+<style>
+body{
+  margin:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+#canvasWrapper{
+  width:100%;
+  max-width:500px;
+  aspect-ratio:1440/3120;
+}
+
+canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+</style>
+</head>
+<body>
+
+<div id="canvasWrapper">
+  <canvas id="canvas" width="1440" height="3120"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const params = new URLSearchParams(window.location.search);
+const nick = params.get("nick") || "";
+const birthday = params.get("birthday") || "";
+
+const today = new Date();
+const mm = String(today.getMonth()+1).padStart(2,'0');
+const dd = String(today.getDate()).padStart(2,'0');
+const todayStr = mm + dd;
+
+const formattedDate = `${today.getFullYear()}.${mm}.${dd}`;
+
+let backgroundImage = "default.jpg";
+let message = "오늘도 함께해줘서 고마워.";
+
+if(birthday && birthday === todayStr){
+  backgroundImage = "special_birthday.jpg";
+  message = "HAPPY BIRTHDAY " + (nick ? nick : "");
+}
+
+const img = new Image();
+img.onload = function(){
+  render();
+};
+img.src = backgroundImage;
+
+function render(){
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+
+  // 상단 날짜
+  ctx.font = "bold 70px sans-serif";
+  ctx.fillText(formattedDate, canvas.width/2, 200);
+
+  // 중앙 메시지
+  ctx.font = "bold 90px sans-serif";
+  wrapText(message, canvas.width/2, canvas.height - 500, 1200, 100);
+
+  // 방송 시간
+  ctx.font = "60px sans-serif";
+  ctx.fillText("ON 18:00 PM", canvas.width/2, canvas.height - 350);
+
+  // 닉네임 표시
+  ctx.font = "50px sans-serif";
+  ctx.fillText("@HaesolEyo", canvas.width/2, canvas.height - 250);
+}
+
+function wrapText(text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  let testLine = '';
+  let lineCount = 0;
+
+  for(let n = 0; n < words.length; n++){
+    testLine += words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+
+    if(testWidth > maxWidth && n > 0){
+      ctx.fillText(line, x, y + (lineCount * lineHeight));
+      line = words[n] + ' ';
+      testLine = words[n] + ' ';
+      lineCount++;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, y + (lineCount * lineHeight));
+}
+</script>
+
+</body>
+</html>
