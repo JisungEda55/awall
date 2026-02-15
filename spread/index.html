@@ -41,47 +41,76 @@ const ctx = canvas.getContext("2d");
 const params = new URLSearchParams(window.location.search);
 const nick = params.get("nick") || "";
 const birthday = params.get("birthday") || "";
+const textParam = params.get("text") || "";
 
 const today = new Date();
 const mm = String(today.getMonth()+1).padStart(2,'0');
 const dd = String(today.getDate()).padStart(2,'0');
 const todayStr = mm + dd;
-
 const formattedDate = `${today.getFullYear()}.${mm}.${dd}`;
 
-let backgroundImage = "default.jpg";
-let message = "오늘도 함께해줘서 고마워.";
+// 기본값
+let bgSrc = "bg_default.jpg";
+let centerSrc = "center_default.png";
+let message = textParam || "오늘도 함께해줘서 고마워.";
 
+// 생일 조건
 if(birthday && birthday === todayStr){
-  backgroundImage = "https://raw.githubusercontent.com/JisungEda55/awall/refs/heads/main/spread/IMG_6908.png";
-  message = "HAPPY BIRTHDAY " + (nick ? nick : "");
+  bgSrc = "bg_birthday.jpg";
+  centerSrc = "center_birthday.png";
+  message = "HAPPY BIRTHDAY " + (nick || "");
 }
 
-const img = new Image();
-img.onload = function(){
-  render();
-};
-img.src = backgroundImage;
+// 이미지 로딩 후 합성
+const bgImg = new Image();
+const centerImg = new Image();
+
+let loaded = 0;
+
+function checkLoaded(){
+  loaded++;
+  if(loaded === 2){
+    render();
+  }
+}
+
+bgImg.onload = checkLoaded;
+centerImg.onload = checkLoaded;
+
+bgImg.src = bgSrc;
+centerImg.src = centerSrc;
 
 function render(){
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  // 1️⃣ 배경
+  ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+  // 2️⃣ 중앙 이미지
+  const maxWidth = canvas.width * 0.7;
+  const scale = maxWidth / centerImg.width;
+  const imgW = centerImg.width * scale;
+  const imgH = centerImg.height * scale;
+
+  const x = (canvas.width - imgW)/2;
+  const y = (canvas.height - imgH)/2 - 200;
+
+  ctx.drawImage(centerImg, x, y, imgW, imgH);
 
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
 
-  // 상단 날짜
+  // 3️⃣ 상단 날짜
   ctx.font = "bold 70px sans-serif";
   ctx.fillText(formattedDate, canvas.width/2, 200);
 
-  // 중앙 메시지
-  ctx.font = "bold 90px sans-serif";
-  wrapText(message, canvas.width/2, canvas.height - 500, 1200, 100);
+  // 4️⃣ 하단 문구
+  ctx.font = "bold 80px sans-serif";
+  wrapText(message, canvas.width/2, canvas.height - 550, 1200, 100);
 
-  // 방송 시간
+  // 5️⃣ 방송 시간
   ctx.font = "60px sans-serif";
   ctx.fillText("ON 18:00 PM", canvas.width/2, canvas.height - 350);
 
-  // 닉네임 표시
+  // 6️⃣ 고정 핸들
   ctx.font = "50px sans-serif";
   ctx.fillText("@HaesolEyo", canvas.width/2, canvas.height - 250);
 }
