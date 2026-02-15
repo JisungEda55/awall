@@ -4,20 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birthday</title>
-
 <style>
 body{
   margin:0;
   background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-img{
-  width:100%;
-  max-width:500px;
-  display:block;
 }
 </style>
 </head>
@@ -33,7 +23,6 @@ canvas.width = 1440;
 canvas.height = 3120;
 const ctx = canvas.getContext("2d");
 
-// 🎂 생일 배경 이미지
 const bgURL = "https://jisungeda55.github.io/awall/spread/IMG_6910.png";
 
 const img = new Image();
@@ -50,7 +39,6 @@ function render(){
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
 
-  // 고정 문구
   ctx.font = "bold 120px sans-serif";
   ctx.fillText("HAPPY BIRTHDAY", canvas.width/2, canvas.height - 900);
 
@@ -67,10 +55,16 @@ function render(){
   ctx.font = "60px sans-serif";
   ctx.fillText("@HaesolEyo", canvas.width/2, canvas.height - 250);
 
-  // 🔥 여기서 HTML 전체를 이미지로 교체
-  const finalImage = canvas.toDataURL("image/png");
-  document.body.innerHTML =
-    `<img src="${finalImage}" alt="birthday wallpaper">`;
+  downloadImage();
+}
+
+function downloadImage(){
+  const link = document.createElement("a");
+  link.download = "birthday.png";
+  link.href = canvas.toDataURL("image/png");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function wrapText(text, x, y, maxWidth, lineHeight){
